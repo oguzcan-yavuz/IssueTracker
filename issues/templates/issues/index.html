@@ -1,0 +1,10 @@
+{% extends 'issues/base.html' %}
+{% block body %}
+    {% for issue in object_list %}
+        <p>{{ issue.name }}</p>
+        <p>{{ issue.creation_time }}</p>
+        <p>{{ issue.product }}</p>
+        <p>{{ issue.tech_guy }}</p>
+        <p>{{ issue.is_solved }}</p>
+    {% endfor %}
+{% endblock %}
