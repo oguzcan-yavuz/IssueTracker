@@ -1,7 +1,9 @@
 {% extends 'issues/base.html' %}
-<a href="{% url 'new_issue' %}">New Issue</a>
-<br>
 {% block body %}
+    <a href="{% url 'new_issue' %}">New Issue</a>
+    <br>
+    <a href="{% url 'register' %}">Register</a>
+    <br>
     {% for issue in object_list %}
         <p>{{ issue.name }}</p>
         <p>{{ issue.creation_time }}</p>
