@@ -1,6 +1,6 @@
 from django.views.generic import *
 
-from forms import AddIssueForm, UserForm
+from .forms import AddIssueForm, UserForm
 from .models import Issue
 
 
@@ -12,6 +12,9 @@ class MainView(ListView):
 
 
 class AddIssueView(CreateView):
+    """
+    Creates new issues.
+    """
     form_class = AddIssueForm
     template_name = 'issues/add_issue.html'
     success_url = "/"
