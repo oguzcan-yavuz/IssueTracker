@@ -3,10 +3,10 @@ from django.conf import settings
 
 
 class Issue(models.Model):
-    name = models.CharField(max_length=1000, unique=True)
+    name = models.CharField(max_length=1000, unique=True, blank=True, null=True)
     creation_time = models.DateTimeField(auto_now_add=True)
-    product = models.ForeignKey('Product', related_name="broken_product")
-    tech_guy = models.ForeignKey(settings.AUTH_USER_MODEL)
+    product = models.ForeignKey('Product', related_name="broken_product", blank=True, null=True)
+    tech_guy = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     is_solved = models.BooleanField(default=False)
 
     def __str__(self):

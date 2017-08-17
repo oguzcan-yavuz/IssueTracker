@@ -1,4 +1,6 @@
 {% extends 'issues/base.html' %}
+<a href="{% url 'new_issue' %}">New Issue</a>
+<br>
 {% block body %}
     {% for issue in object_list %}
         <p>{{ issue.name }}</p>
