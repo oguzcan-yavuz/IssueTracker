@@ -8,21 +8,34 @@ class Issue(models.Model):
         ('FI', 'FIXING'),
         ('DO', 'DONE'),
     )
-    name = models.CharField(max_length=1000, unique=True, blank=True, null=True)
+    name = models.CharField(max_length=1000, unique=True)
     creation_time = models.DateTimeField(auto_now_add=True)
-    product = models.ForeignKey('Product', related_name="broken_product", blank=True, null=True)
+    product = models.ForeignKey('Product', related_name="broken_product")
     tech_guy = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True)
     status = models.CharField(default='QU', max_length=2, choices=STATUSES)
-    customer_name = models.CharField(max_length=100, blank=True, null=True)
-    customer_surname = models.CharField(max_length=100, blank=True, null=True)
-    customer_email = models.EmailField(blank=True, null=True)
-    customer_phone = models.CharField(max_length=20, blank=True, null=True)
+    customer = models.ForeignKey("Customer")
 
     def __str__(self):
         return "{0}: {1}".format(self.pk, self.name)
 
-    class Meta:
-        get_latest_by = "creation_time"
+
+class Customer(models.Model):
+    GENDERS = (
+        ("M", "MALE"),
+        ("F", "FEMALE")
+    )
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    creation_time = models.DateTimeField(auto_now_add=True)
+    email = models.EmailField(blank=True, null=True)
+    address = models.CharField(max_length=100, blank=True, null=True)
+    tax_number = models.CharField(max_length=20, blank=True, null=True)
+    id_number = models.CharField(max_length=20, blank=True, null=True)
+    gender = models.CharField(max_length=1, choices=GENDERS, blank=True, null=True)
+    company_name = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return "{0}".format(self.name)
 
 
 class Product(models.Model):

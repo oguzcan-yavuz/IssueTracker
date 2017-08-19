@@ -1,7 +1,7 @@
 {% extends 'issues/base.html' %}
 {% block body %}
     {% if request.user.is_authenticated %}
-        <form action="." method="POST">
+        <form action="." method="POST" autocomplete="on">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Add</button>

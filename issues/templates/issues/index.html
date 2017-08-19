@@ -12,9 +12,8 @@
         <p>{{ issue.product }}</p>
         <p>{{ issue.tech_guy }}</p>
         <p>{{ issue.status }}</p>
-        <p>{{ issue.customer_name }} {{ issue.customer_surname }}</p>
-        <p>{{ issue.customer_email }}</p>
-        <p>{{ issue.customer_phone }}</p>
+        <p>{{ issue.customer }}</p>
+        <p>{{ issue.customer.phone }}</p>
         <br>
     {% endfor %}
 {% endblock %}
