@@ -31,7 +31,3 @@ class UserView(CreateView):
     form_class = UserForm
     template_name = "issues/register.html"
     success_url = "/"
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
