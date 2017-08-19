@@ -11,7 +11,10 @@
         <p>{{ issue.creation_time }}</p>
         <p>{{ issue.product }}</p>
         <p>{{ issue.tech_guy }}</p>
-        <p>{{ issue.is_solved }}</p>
+        <p>{{ issue.status }}</p>
+        <p>{{ issue.customer_name }} {{ issue.customer_surname }}</p>
+        <p>{{ issue.customer_email }}</p>
+        <p>{{ issue.customer_phone }}</p>
         <br>
     {% endfor %}
 {% endblock %}

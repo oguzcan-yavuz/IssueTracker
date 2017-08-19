@@ -12,7 +12,7 @@ class AddIssueForm(forms.ModelForm):
     """
     class Meta:
         model = Issue
-        fields = ("name", "product", "is_solved")
+        exclude = ("id", "creation_time")
         widgets = {
             "tech_guy": HiddenInput()
         }
