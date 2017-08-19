@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import HiddenInput
 
 from issues.models import Issue
 
@@ -11,7 +12,10 @@ class AddIssueForm(forms.ModelForm):
     """
     class Meta:
         model = Issue
-        fields = ("name", "product", "tech_guy", "is_solved")
+        fields = ("name", "product", "is_solved")
+        widgets = {
+            "tech_guy": HiddenInput()
+        }
 
 
 class UserForm(UserCreationForm):

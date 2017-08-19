@@ -6,7 +6,7 @@
     <br>
     <a href="{% url 'login' %}">Login</a>
     <br>
-    {% for issue in object_list %}
+    {% for issue in issue_list %}
         <p>{{ issue.name }}</p>
         <p>{{ issue.creation_time }}</p>
         <p>{{ issue.product }}</p>

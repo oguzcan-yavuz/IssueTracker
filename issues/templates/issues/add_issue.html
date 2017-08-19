@@ -1,8 +1,0 @@
-{% extends 'issues/base.html' %}
-{% block body %}
-    <form action="." method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add</button>
-    </form>
-{% endblock %}

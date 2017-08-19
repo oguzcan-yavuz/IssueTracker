@@ -1,0 +1,10 @@
+{% extends 'issues/base.html' %}
+{% block body %}
+    {% if request.user.is_authenticated %}
+        <form action="." method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add</button>
+        </form>
+    {% endif %}
+{% endblock %}
