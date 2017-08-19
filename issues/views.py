@@ -1,14 +1,24 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import *
 
 from .forms import *
 from .models import Issue
 
 
-class MainView(ListView):
+class MainView(LoginRequiredMixin, ListView):
     context_object_name = 'issue_list'   # changes the variable name that passes to the template
     template_name = 'issues/index.html'
     queryset = Issue.objects.all().order_by("-creation_time")   # queryset = Issue.objects.all() | model = Issue
+
+
+class IssueView(LoginRequiredMixin, UpdateView):
+    """Shows details of the issue. Also works like an update view for updating the issue."""
+
+    # it is not listing the issues but form is showing.
+    model = Issue
+    form_class = IssueForm
+    template_name = "issues/issue_update.html"
+    success_url = '/'
 
 
 class AddIssueView(LoginRequiredMixin, CreateView):
@@ -49,10 +59,12 @@ class AddProductView(LoginRequiredMixin, CreateView):
     success_url = "/"
 
 
-class UserView(CreateView):
+class UserView(PermissionRequiredMixin, CreateView):
     """
     Creates new tech guys...
     """
+    permission_required = 'user.is_superuser'
     form_class = UserForm
     template_name = "issues/register.html"
     success_url = "/"
+

@@ -13,7 +13,10 @@ class Issue(models.Model):
     product = models.ForeignKey('Product', related_name="broken_product")
     tech_guy = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True)
     status = models.CharField(default='QU', max_length=2, choices=STATUSES)
+    price = models.CharField(default="0", max_length=20)
     customer = models.ForeignKey("Customer")
+    todo_list = models.TextField(blank=True, null=True)
+    done_list = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return "{0}: {1}".format(self.pk, self.name)

@@ -40,6 +40,13 @@ class CategoryForm(forms.ModelForm):
         fields = ('name',)
 
 
+class IssueForm(forms.ModelForm):
+    """Updates the issue"""
+    class Meta:
+        model = Issue
+        fields = ('name', 'status', 'price', 'todo_list', 'done_list')
+
+
 class UserForm(UserCreationForm):
     """Creates new technical support users"""
     class Meta(UserCreationForm.Meta):
