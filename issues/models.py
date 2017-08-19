@@ -8,7 +8,7 @@ class Issue(models.Model):
         ('FI', 'FIXING'),
         ('DO', 'DONE'),
     )
-    name = models.CharField(max_length=1000, unique=True)
+    name = models.CharField(max_length=1000)
     creation_time = models.DateTimeField(auto_now_add=True)
     product = models.ForeignKey('Product', related_name="broken_product")
     tech_guy = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True)
@@ -33,6 +33,7 @@ class Customer(models.Model):
     id_number = models.CharField(max_length=20, blank=True, null=True)
     gender = models.CharField(max_length=1, choices=GENDERS, blank=True, null=True)
     company_name = models.CharField(max_length=100, blank=True, null=True)
+    registered_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True)
 
     def __str__(self):
         return "{0}".format(self.name)

@@ -10,28 +10,34 @@ class AddIssueForm(forms.ModelForm):
     """Creates new issues."""
     class Meta:
         model = Issue
-        exclude = ("id", "creation_time")
+        exclude = tuple('creation_time')
         widgets = {
             "tech_guy": HiddenInput(),
         }
 
 
-# class CustomerForm(forms.ModelForm):
-#     """Creates new customers."""
-#     class Meta:
-#         model = Customer
-#
-#
-# class ProductForm(forms.ModelForm):
-#     """Creates new products."""
-#     class Meta:
-#         model = Product
-#
-#
-# class CategoryForm(forms.ModelForm):
-#     """Creates new categories."""
-#     class Meta:
-#         model = Category
+class CustomerForm(forms.ModelForm):
+    """Creates new customers."""
+    class Meta:
+        model = Customer
+        exclude = tuple('creation_time')
+        widgets = {
+            "registered_by": HiddenInput()
+        }
+
+
+class ProductForm(forms.ModelForm):
+    """Creates new products."""
+    class Meta:
+        model = Product
+        fields = ('name', 'category')
+
+
+class CategoryForm(forms.ModelForm):
+    """Creates new categories."""
+    class Meta:
+        model = Category
+        fields = ('name',)
 
 
 class UserForm(UserCreationForm):

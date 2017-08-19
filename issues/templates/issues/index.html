@@ -2,10 +2,21 @@
 {% block body %}
     <a href="{% url 'new_issue' %}">New Issue</a>
     <br>
-    <a href="{% url 'register' %}">Register</a>
+    <a href="{% url 'new_customer' %}">New Customer</a>
     <br>
-    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'new_category' %}">New Category</a>
     <br>
+    <a href="{% url 'new_product' %}">New Product</a>
+    <br>
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+        <br>
+    {% else %}
+        <a href="{% url 'register' %}">Register</a>
+        <br>
+        <a href="{% url 'login' %}">Login</a>
+        <br>
+    {% endif %}
     {% for issue in issue_list %}
         <p>{{ issue.name }}</p>
         <p>{{ issue.creation_time }}</p>
@@ -14,6 +25,7 @@
         <p>{{ issue.status }}</p>
         <p>{{ issue.customer }}</p>
         <p>{{ issue.customer.phone }}</p>
+        <p>Registered by: {{ issue.customer.registered_by }}</p>
         <br>
     {% endfor %}
 {% endblock %}

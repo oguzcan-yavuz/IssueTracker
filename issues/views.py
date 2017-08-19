@@ -16,7 +16,7 @@ class AddIssueView(LoginRequiredMixin, CreateView):
     Creates new issues.
     """
     form_class = AddIssueForm
-    template_name = 'issues/issue_add.html'
+    template_name = 'issues/basic_form.html'
     success_url = "/"
 
     def form_valid(self, form):
@@ -24,25 +24,29 @@ class AddIssueView(LoginRequiredMixin, CreateView):
         return super(AddIssueView, self).form_valid(form)
 
 
-# class AddCustomerView(LoginRequiredMixin, CreateView):
-#     """Creates new customers"""
-#     form_class = CustomerForm
-#     template_name = ""
-#     success_url = "/"
-#
-#
-# class AddCategoryView(LoginRequiredMixin, CreateView):
-#     """Creates new categories"""
-#     form_class = CategoryForm
-#     template_name = ""
-#     success_url = "/"
-#
-#
-# class AddProductView(LoginRequiredMixin, CreateView):
-#     """Creates new products"""
-#     form_class = ProductForm
-#     template_name = "/"
-#     success_url = "/"
+class AddCustomerView(LoginRequiredMixin, CreateView):
+    """Creates new customers"""
+    form_class = CustomerForm
+    template_name = "issues/basic_form.html"
+    success_url = "/"
+
+    def form_valid(self, form):
+        form.instance.registered_by = self.request.user
+        return super(AddCustomerView, self).form_valid(form)
+
+
+class AddCategoryView(LoginRequiredMixin, CreateView):
+    """Creates new categories"""
+    form_class = CategoryForm
+    template_name = "issues/basic_form.html"
+    success_url = "/"
+
+
+class AddProductView(LoginRequiredMixin, CreateView):
+    """Creates new products"""
+    form_class = ProductForm
+    template_name = "issues/basic_form.html"
+    success_url = "/"
 
 
 class UserView(CreateView):
