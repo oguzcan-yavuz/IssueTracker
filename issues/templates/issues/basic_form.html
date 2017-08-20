@@ -13,7 +13,6 @@
             </li>
             <li class="active">
                 <i class="fa fa-edit"></i> {{ custom_title }}
-
             </li>
         </ol>
     </div>
@@ -21,10 +20,9 @@
 <!-- /.row -->
 {% endblock %}
 {% block body %}
-        <form action="." method="POST" autocomplete="on" >
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            <button type="submit">Add</button>
-        </form>
-
+    <form action="." method="POST" autocomplete="on" >
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit">Add</button>
+    </form>
 {% endblock %}

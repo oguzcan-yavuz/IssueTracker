@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import *
+from django.shortcuts import reverse
 
 from .forms import *
 from .models import Issue
@@ -38,7 +39,7 @@ class AddIssueView(LoginRequiredMixin, CustomView):
     form_class = AddIssueForm
     template_name = 'issues/basic_form.html'
     success_url = "/"
-    title = "Yeni Sorun Ekle"     # test variable for template
+    title = "Yeni Sorun Ekle"
 
     def form_valid(self, form):
         form.instance.tech_guy = self.request.user  # we are assigning tech_guy with request.user
@@ -49,8 +50,10 @@ class AddCustomerView(LoginRequiredMixin, CustomView):
     """Creates new customers"""
     form_class = CustomerForm
     template_name = "issues/basic_form.html"
-    success_url = "/"
     title = "Yeni Müşteri Ekle"
+
+    def get_success_url(self):
+        return reverse('new_category')
 
     def form_valid(self, form):
         form.instance.registered_by = self.request.user
@@ -61,16 +64,20 @@ class AddCategoryView(LoginRequiredMixin, CustomView):
     """Creates new categories"""
     form_class = CategoryForm
     template_name = "issues/basic_form.html"
-    success_url = "/"
     title = "Yeni Kategori Ekle"
+
+    def get_success_url(self):
+        return reverse('new_product')
 
 
 class AddProductView(LoginRequiredMixin, CustomView):
     """Creates new products"""
     form_class = ProductForm
     template_name = "issues/basic_form.html"
-    success_url = "/"
     title = "Yeni Ürün Ekle"
+
+    def get_success_url(self):
+        return reverse('new_issue')
 
 
 class UserView(PermissionRequiredMixin, CustomView):
