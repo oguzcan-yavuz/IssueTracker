@@ -46,6 +46,11 @@ class CustomUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'issues/basic_update.html'
     title = ""
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["custom_title"] = self.title
+        return context
+
 
 class IssueUpdateView(CustomUpdateView):
     """Updates the issue"""
