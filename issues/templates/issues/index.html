@@ -24,7 +24,7 @@
                         <tr class="active">
                             <td>{{ issue.customer }}</td>
                             <td><a href="{% url 'issue_update' pk=issue.pk %}">{{ issue.name }}</a></td>
-                            <td>Product Name</td>
+                            <td>{{ issue.product}}</td>
                             <td>{{ issue.todo_list }}</td>
                             <td>{{ issue.customer.phone }}</td>
                             <td>{{ issue.status }}</td>
@@ -40,4 +40,6 @@
 
     </div>
     <!-- /.row -->
+    {# Pagination Section #}
+    {% include 'issues/pagination.html' %}
 {% endblock %}
