@@ -7,20 +7,24 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-striped">
                         <thead>
+                          <tr>
+                              <th>Customer Name</th>
+                              <th>Issue Name</th>
+                              <th>Product Name</th>
+                              <th>Todo</th>
+                              <th>Phone</th>
+                              <th>Status</th>
+                              <th>Creation Time</th>
+
+                          </tr>
+                      </thead>
+                      <tbody>
     {% for issue in issue_list %}
-                            <tr>
-                                <th>Customer Name</th>
-                                <th>Issue Name</th>
-                                <th>Todo</th>
-                                <th>Phone</th>
-                                <th>Status</th>
-                                <th>Creation Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+
                             <tr class="active">
                                 <td>{{ issue.customer }}</td>
                                 <td><a href="{% url 'issue_detail' pk=issue.pk %}">{{ issue.name }}</a></td>
+                                <td>Product Name</td>
                                 <td>{{ issue.todo_list }}</td>
                                 <td>{{ issue.customer.phone }}</td>
                                 <td>{{ issue.status }}</td>

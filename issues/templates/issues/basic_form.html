@@ -1,5 +1,5 @@
 {% extends 'issues/base.html' %}
-{% load bootstrap3%}
+{% load bootstrap3 %}
 {% block heading %}
 <!-- Page Heading -->
 <div class="row">
@@ -9,10 +9,11 @@
         </h1>
         <ol class="breadcrumb">
             <li>
-                <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                <i class="fa fa-dashboard"></i>  <a href="/">Homepage</a>
             </li>
             <li class="active">
-                <i class="fa fa-edit"></i> Forms
+                <i class="fa fa-edit"></i> {{ custom_title }}
+
             </li>
         </ol>
     </div>

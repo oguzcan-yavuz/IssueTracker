@@ -80,4 +80,3 @@ class UserView(PermissionRequiredMixin, CustomView):
     form_class = UserForm
     template_name = "issues/register.html"
     success_url = "/"
-
