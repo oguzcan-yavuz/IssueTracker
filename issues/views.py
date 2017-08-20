@@ -19,6 +19,12 @@ class MainView(LoginRequiredMixin, ListView):
     template_name = 'issues/index.html'
     queryset = Issue.objects.all().order_by("-creation_time")   # queryset = Issue.objects.all() | model = Issue
 
+class ProductView(LoginRequiredMixin, ListView):
+    context_object_name = 'products'   # changes the variable name that passes to the template
+    template_name = 'issues/products.html'
+    model = Product   # queryset = Issue.objects.all() | model = Issue
+
+
 
 class IssueView(LoginRequiredMixin, UpdateView):
     """Shows details of the issue. Also works like an update view for updating the issue."""

@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^customers/$', AddCustomerView.as_view(), name="new_customer"),
     url(r'^categories/$', AddCategoryView.as_view(), name="new_category"),
     url(r'^products/$', AddProductView.as_view(), name="new_product"),
+    url(r'^allProducts/$', ProductView.as_view(), name="all_products"),
 ]
