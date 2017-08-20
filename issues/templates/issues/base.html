@@ -153,10 +153,10 @@
           <div class="collapse navbar-collapse navbar-ex1-collapse">
               <ul class="nav navbar-nav side-nav">
                   <li>
-                    <a href="{% url 'main' %}" ><i class="fa fa-fw fa-home"></i> Homepage</i></a>
+                    <a href="{% url 'main' %}" ><i class="fa fa-fw fa-home"></i> Homepage</a>
                   </li>
                   <li>
-                      <a href="javascript:" data-toggle="collapse" data-target="#customer"><i class="fa fa-fw fa-barcode"></i> Customer <i class="fa fa-fw fa-caret-down"></i></a>
+                      <a href="javascript:" data-toggle="collapse" data-target="#customer"><i class="fa fa-fw fa-users"></i> Customer <i class="fa fa-fw fa-caret-down"></i></a>
                       <ul id="customer" class="collapse">
                           <li>
                               <a href="{% url 'new_customer' %}">New Customer</a>
@@ -191,7 +191,7 @@
                   </li>
 
                   <li>
-                      <a href="javascript:;" data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-users" ></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
+                      <a href="javascript:;" data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-user-md" ></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
                       <ul id="users" class="collapse">
                           <li>
                             {% if request.user.is_superuser %}
