@@ -28,6 +28,7 @@ class IssueView(LoginRequiredMixin, UpdateView):
     form_class = IssueForm
     template_name = "issues/issue_update.html"
     success_url = '/'
+    context_object_name = 'issue_details'
 
 
 class AddIssueView(LoginRequiredMixin, CustomView):

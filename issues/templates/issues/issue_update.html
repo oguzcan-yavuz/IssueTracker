@@ -1,5 +1,6 @@
 {% extends 'issues/base.html' %}
 {% block body %}
+    Customer: {{ issue_details.customer }}
     <form action="." method="POST" autocomplete="on">
         {% csrf_token %}
         {{ form.as_p }}
