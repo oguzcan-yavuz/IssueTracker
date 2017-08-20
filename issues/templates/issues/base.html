@@ -186,17 +186,18 @@
                           </li>
                       </ul>
                   </li>
-
+                {% if request.user.is_superuser %}
                   <li>
                       <a href="javascript:;" data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-user-md" ></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
                       <ul id="users" class="collapse">
                           <li>
-                            {% if request.user.is_superuser %}
+
                                 <a href="{% url 'register' %}"><i class="fa fa-fw fa-edit"></i>Register</a>
-                            {% endif %}
+
                         </li>
                     </ul>
                 </li>
+                {% endif %}
 
                 <li>
 
