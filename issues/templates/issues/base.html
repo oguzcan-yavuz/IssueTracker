@@ -156,13 +156,24 @@
                     <a href="{% url 'main' %}" ><i class="fa fa-fw fa-home"></i> Homepage</i></a>
                   </li>
                   <li>
-                      <a href="javascript:;" data-toggle="collapse" data-target="#product"><i class="fa fa-fw fa-barcode"></i> Products <i class="fa fa-fw fa-caret-down"></i></a>
+                      <a href="javascript:" data-toggle="collapse" data-target="#customer"><i class="fa fa-fw fa-barcode"></i> Customer <i class="fa fa-fw fa-caret-down"></i></a>
+                      <ul id="customer" class="collapse">
+                          <li>
+                              <a href="{% url 'new_customer' %}">New Customer</a>
+                          </li>
+                          <li>
+                              <a href="{% url 'customer_list_url' %}">All Customers</a>
+                          </li>
+                      </ul>
+                  </li>
+                  <li>
+                      <a href="javascript:" data-toggle="collapse" data-target="#product"><i class="fa fa-fw fa-barcode"></i> Products <i class="fa fa-fw fa-caret-down"></i></a>
                       <ul id="product" class="collapse">
                           <li>
                               <a href="{% url 'new_product' %}">New Product</a>
                           </li>
                           <li>
-                              <a href="{% url 'product_list' %}">All Products</a>
+                              <a href="{% url 'product_list_url' %}">All Products</a>
                           </li>
                       </ul>
                   </li>
