@@ -23,7 +23,7 @@
 
                             <tr class="active">
                                 <td>{{ issue.customer }}</td>
-                                <td><a href="{% url 'issue_detail' pk=issue.pk %}">{{ issue.name }}</a></td>
+                                <td><a href="{% url 'issue_update' pk=issue.pk %}">{{ issue.name }}</a></td>
                                 <td>Product Name</td>
                                 <td>{{ issue.todo_list }}</td>
                                 <td>{{ issue.customer.phone }}</td>
@@ -44,7 +44,7 @@
 
 
 <!-- <p>
-    Issue Name: <a href="{% url 'issue_detail' pk=issue.pk %}">{{ issue.name }}</a>
+    Issue Name: <a href="{% url 'issue_update' pk=issue.pk %}">{{ issue.name }}</a>
 </p>
 <p>Creation Time: {{ issue.creation_time }}</p>
 <p>Product: {{ issue.product }}</p>

@@ -43,16 +43,31 @@ class Customer(models.Model):
 
 
 class Product(models.Model):
+    COLORS = (
+        ("red", "KIRMIZI"),
+        ("green", "YEŞİL"),
+        ("blue", "MAVİ"),
+        ("white", "BEYAZ"),
+        ("black", "SİYAH"),
+        ("brown", "KAHVERENGİ"),
+        ("purple", "MOR"),
+        ("orange", "TURUNCU"),
+    )
+
     name = models.CharField(max_length=200, unique=True)
     category = models.ForeignKey('Category', related_name="product")
+    serial_number = models.CharField(max_length=25, blank=True, null=True)
+    case_status = models.TextField(blank=True, null=True)
+    warranty = models.BooleanField(default=False)
+    color = models.CharField(max_length=20, choices=COLORS, blank=True, null=True)
 
     def __str__(self):
-        return "{0}: {1} {2}".format(self.pk, self.name, self.category)
+        return "{0}".format(self.name)
 
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        return "{0}: {1}".format(self.pk, self.name)
+        return "{0}".format(self.name)
 
