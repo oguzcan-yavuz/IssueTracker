@@ -6,10 +6,22 @@ from .forms import *
 from .models import Issue
 
 
-class MainView(LoginRequiredMixin, ListView):
+class IssueListView(LoginRequiredMixin, ListView):
     context_object_name = 'issue_list'   # changes the variable name that passes to the template
     template_name = 'issues/index.html'
     queryset = Issue.objects.all().order_by("-creation_time")   # queryset = Issue.objects.all() | model = Issue
+
+
+class ProductListView(LoginRequiredMixin, ListView):
+    context_object_name = 'products'
+    template_name = 'issues/products.html'
+    model = Product
+    title = ""
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["custom_title"] = self.title
+        return context
 
 
 class CustomView(LoginRequiredMixin, CreateView):
@@ -25,18 +37,6 @@ class CustomView(LoginRequiredMixin, CreateView):
 class CustomUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'issues/basic_update.html'
     title = ""
-
-
-class ProductView(LoginRequiredMixin, ListView):
-    context_object_name = 'products'   # changes the variable name that passes to the template
-    template_name = 'issues/products.html'
-    model = Product   # queryset = Issue.objects.all() | model = Issue
-    title=""
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["custom_title"] = self.title
-        return context
 
 
 class IssueUpdateView(CustomUpdateView):

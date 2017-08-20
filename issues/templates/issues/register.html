@@ -1,8 +1,9 @@
 {% extends 'issues/base.html' %}
+{% load bootstrap3 %}
 {% block body %}
     <form action="." method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% bootstrap_form form %}
         <button type="submit">Register</button>
     </form>
 {% endblock %}
