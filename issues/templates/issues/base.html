@@ -172,10 +172,19 @@
           </div>
           <!-- /.navbar-collapse -->
       </nav>
+      <div id="page-wrapper">
 
+          <div class="container-fluid">
+{% block heading %}
+{% endblock %}
 {% block body %}
 {% endblock %}
 
+          </div>
+          <!-- /.container-fluid -->
+
+      </div>
+<!-- /#page-wrapper -->
 <!-- jQuery -->
 <script src="{% static 'issues/js/jquery.js' %}"></script>
 
