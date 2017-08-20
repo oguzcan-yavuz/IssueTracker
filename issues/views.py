@@ -18,6 +18,7 @@ class ProductListView(LoginRequiredMixin, ListView):
     context_object_name = 'product_list'
     template_name = 'issues/products.html'
     model = Product
+    paginate_by = 5
 
 
 class CustomerListView(LoginRequiredMixin, ListView):
