@@ -21,6 +21,8 @@
 <!-- /.row -->
 {% endblock %}
 {% block body %}
+    {# current_issue field will be edited for only issue update view and it will #}
+    {# display the customer #}
     Customer: {{ current_issues.customer }}
     <form action="." method="POST" autocomplete="on">
         {% csrf_token %}
