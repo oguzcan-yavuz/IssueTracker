@@ -1,6 +1,4 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 from django.views.generic import *
 
 from .forms import *
@@ -30,7 +28,7 @@ class AddIssueView(LoginRequiredMixin, CreateView):
     form_class = AddIssueForm
     template_name = 'issues/basic_form.html'
     success_url = "/"
-    var = "test123"     # test variable for template
+    title = "Yeni Sorun Ekle"     # test variable for template
 
     def form_valid(self, form):
         form.instance.tech_guy = self.request.user  # we are assigning tech_guy with request.user
@@ -38,7 +36,7 @@ class AddIssueView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):       # this motherfucker
         context = super().get_context_data(**kwargs)
-        context["var"] = self.var
+        context["title"] = self.title
         return context
 
 
@@ -47,11 +45,16 @@ class AddCustomerView(LoginRequiredMixin, CreateView):
     form_class = CustomerForm
     template_name = "issues/basic_form.html"
     success_url = "/"
+    title = "Yeni Müşteri Ekle"
 
     def form_valid(self, form):
         form.instance.registered_by = self.request.user
         return super(AddCustomerView, self).form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.title
+        return context
 
 class AddCategoryView(LoginRequiredMixin, CreateView):
     """Creates new categories"""
@@ -75,4 +78,3 @@ class UserView(PermissionRequiredMixin, CreateView):
     form_class = UserForm
     template_name = "issues/register.html"
     success_url = "/"
-
