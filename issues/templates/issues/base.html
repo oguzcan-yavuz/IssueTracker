@@ -150,25 +150,49 @@
           <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
           <div class="collapse navbar-collapse navbar-ex1-collapse">
               <ul class="nav navbar-nav side-nav">
-                  <li class="active">
-                      <a href="{% url 'new_issue' %}"><i class="fa fa-fw fa-dashboard"></i> New Issue</a>
+                  <li>
+                    <a href="{% url 'main' %}" ><i class="fa fa-fw fa-home"></i> Homepage</i></a>
                   </li>
                   <li>
-                      <a href="{% url 'new_customer' %}"><i class="fa fa-fw fa-bar-chart-o"></i> New Customer</a>
+                      <a href="javascript:;" data-toggle="collapse" data-target="#product"><i class="fa fa-fw fa-barcode"></i> Products <i class="fa fa-fw fa-caret-down"></i></a>
+                      <ul id="product" class="collapse">
+                          <li>
+                              <a href="{% url 'new_product' %}">New Product</a>
+                          </li>
+                          <li>
+                              <a href="#">All Products</a>
+                          </li>
+                      </ul>
+                  </li>
+
+                  <li>
+                      <a href="javascript:;" data-toggle="collapse" data-target="#categories"><i class="fa fa-fw fa-tags"></i> Categories <i class="fa fa-fw fa-caret-down"></i></a>
+                      <ul id="categories" class="collapse">
+                          <li>
+                              <a href="{% url 'new_category' %}">New Category</a>
+                          </li>
+                          <li>
+                              <a href="#">All Categories</a>
+                          </li>
+                      </ul>
+                  </li>
+
+                  <li>
+                      <a href="javascript:;" data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-users" ></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
+                      <ul id="users" class="collapse">
+                          <li>
+                            {% if request.user.is_superuser %}
+                                <a href="{% url 'register' %}"><i class="fa fa-fw fa-edit"></i>Register</a>
+                            {% endif %}
+                          </li>
+                      </ul>
+                  </li>
+
+                  <li>
+
                   </li>
                   <li>
-                      <a href="{% url 'new_category' %}"><i class="fa fa-fw fa-table"></i> New Category</a>
-                  </li>
-                  <li>
-                      <a href="{% url 'new_product' %}"><i class="fa fa-fw fa-edit"></i> New Product</a>
-                  </li>
-                  <li>
-                    {% if request.user.is_superuser %}
-                        <a href="{% url 'register' %}"><i class="fa fa-fw fa-edit"></i>Register</a>
-                    {% endif %}
-                  </li>
-                  <li>
-                    <a href="{% url 'logout' %}"><i class="fa fa-fw fa-edit"></i>Logout</a>
+                    <a href="{% url 'logout' %}"><i class="fa fa-fw fa-sign-out"></i>Logout</a>
                   </li>
 
 
