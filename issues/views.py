@@ -11,6 +11,7 @@ class IssueListView(LoginRequiredMixin, ListView):
     context_object_name = 'issue_list'   # changes the variable name that passes to the template
     template_name = 'issues/index.html'
     queryset = Issue.objects.all().order_by("-creation_time")   # queryset = Issue.objects.all() | model = Issue
+    paginate_by = 10
 
 
 class ProductListView(LoginRequiredMixin, ListView):
@@ -18,7 +19,7 @@ class ProductListView(LoginRequiredMixin, ListView):
     context_object_name = 'product_list'
     template_name = 'issues/products.html'
     model = Product
-    paginate_by = 5
+    paginate_by = 10
 
 
 class CustomerListView(LoginRequiredMixin, ListView):
@@ -26,6 +27,7 @@ class CustomerListView(LoginRequiredMixin, ListView):
     context_object_name = 'customer_list'
     template_name = 'issues/customers.html'
     queryset = Customer.objects.all().order_by("-creation_time")
+    paginate_by = 10
 
 
 class CustomView(LoginRequiredMixin, CreateView):
