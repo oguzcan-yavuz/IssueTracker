@@ -1,5 +1,24 @@
 {% extends 'issues/base.html' %}
 {% load bootstrap3 %}
+{% block heading %}
+<!-- Page Heading -->
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            Tüm Ürünler
+        </h1>
+        <ol class="breadcrumb">
+            <li>
+                <i class="fa fa-dashboard"></i>  <a href="/">Homepage</a>
+            </li>
+            <li class="active">
+                <i class="fa fa-edit"></i> Tüm Ürünler
+            </li>
+        </ol>
+    </div>
+</div>
+<!-- /.row -->
+{% endblock %}
 {% block body %}
     <div class="row">
         <div class="col-lg-12">
@@ -17,7 +36,7 @@
                     {% for product in product_list %}
 
                         <tr class="active">
-                            <td>{{ product.name }}</td>
+                            <td> <a href="{% url 'product_update' pk=product.pk %}">{{ product.name }}</a></td>
                             <td>{{ product.category }}</td>
                         </tr>
 
