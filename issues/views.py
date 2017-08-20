@@ -5,6 +5,15 @@ from .forms import *
 from .models import Issue
 
 
+class CustomView(CreateView):
+    title = "test"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["custom_title"] = self.title
+        return context
+
+
 class MainView(LoginRequiredMixin, ListView):
     context_object_name = 'issue_list'   # changes the variable name that passes to the template
     template_name = 'issues/index.html'
@@ -21,7 +30,7 @@ class IssueView(LoginRequiredMixin, UpdateView):
     success_url = '/'
 
 
-class AddIssueView(LoginRequiredMixin, CreateView):
+class AddIssueView(LoginRequiredMixin, CustomView):
     """
     Creates new issues.
     """
@@ -34,13 +43,8 @@ class AddIssueView(LoginRequiredMixin, CreateView):
         form.instance.tech_guy = self.request.user  # we are assigning tech_guy with request.user
         return super(AddIssueView, self).form_valid(form)
 
-    def get_context_data(self, **kwargs):       # this motherfucker
-        context = super().get_context_data(**kwargs)
-        context["title"] = self.title
-        return context
 
-
-class AddCustomerView(LoginRequiredMixin, CreateView):
+class AddCustomerView(LoginRequiredMixin, CustomView):
     """Creates new customers"""
     form_class = CustomerForm
     template_name = "issues/basic_form.html"
@@ -51,26 +55,24 @@ class AddCustomerView(LoginRequiredMixin, CreateView):
         form.instance.registered_by = self.request.user
         return super(AddCustomerView, self).form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = self.title
-        return context
 
-class AddCategoryView(LoginRequiredMixin, CreateView):
+class AddCategoryView(LoginRequiredMixin, CustomView):
     """Creates new categories"""
     form_class = CategoryForm
     template_name = "issues/basic_form.html"
     success_url = "/"
+    title = "Yeni Kategori Ekle"
 
 
-class AddProductView(LoginRequiredMixin, CreateView):
+class AddProductView(LoginRequiredMixin, CustomView):
     """Creates new products"""
     form_class = ProductForm
     template_name = "issues/basic_form.html"
     success_url = "/"
+    title = "Yeni Ürün Ekle"
 
 
-class UserView(PermissionRequiredMixin, CreateView):
+class UserView(PermissionRequiredMixin, CustomView):
     """
     Creates new tech guys...
     """
@@ -78,3 +80,4 @@ class UserView(PermissionRequiredMixin, CreateView):
     form_class = UserForm
     template_name = "issues/register.html"
     success_url = "/"
+
