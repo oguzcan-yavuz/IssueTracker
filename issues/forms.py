@@ -40,11 +40,32 @@ class CategoryForm(forms.ModelForm):
         fields = ('name',)
 
 
-class IssueForm(forms.ModelForm):
+class IssueUpdateForm(forms.ModelForm):
     """Updates the issue"""
     class Meta:
         model = Issue
         fields = ('name', 'status', 'price', 'todo_list', 'done_list')
+
+
+class ProductUpdateForm(forms.ModelForm):
+    """Updates the product"""
+    class Meta:
+        model = Product
+        exclude = tuple()
+
+
+class CustomerUpdateForm(forms.ModelForm):
+    """Updates the customer"""
+    class Meta:
+        model = Customer
+        exclude = ('creation_time', 'registered_by')
+
+
+class CategoryUpdateForm(forms.ModelForm):
+    """Updates the category"""
+    class Meta:
+        model = Category
+        exclude = tuple()
 
 
 class UserForm(UserCreationForm):

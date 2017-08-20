@@ -1,17 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import *
+from django.shortcuts import reverse
 
 from .forms import *
 from .models import Issue
-
-
-class CustomView(CreateView):
-    title = "test"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["custom_title"] = self.title
-        return context
 
 
 class MainView(LoginRequiredMixin, ListView):
@@ -19,64 +11,108 @@ class MainView(LoginRequiredMixin, ListView):
     template_name = 'issues/index.html'
     queryset = Issue.objects.all().order_by("-creation_time")   # queryset = Issue.objects.all() | model = Issue
 
+
+class CustomView(LoginRequiredMixin, CreateView):
+    template_name = "issues/basic_form.html"
+    title = ""
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["custom_title"] = self.title
+        return context
+
+
+class CustomUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'issues/basic_update.html'
+    title = ""
+
+
 class ProductView(LoginRequiredMixin, ListView):
     context_object_name = 'products'   # changes the variable name that passes to the template
     template_name = 'issues/products.html'
     model = Product   # queryset = Issue.objects.all() | model = Issue
+    title=""
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["custom_title"] = self.title
+        return context
 
 
-
-class IssueView(LoginRequiredMixin, UpdateView):
-    """Shows details of the issue. Also works like an update view for updating the issue."""
-
-    # it is not listing the issues but form is showing.
+class IssueUpdateView(CustomUpdateView):
+    """Updates the issue"""
     model = Issue
-    form_class = IssueForm
-    template_name = "issues/issue_update.html"
+    form_class = IssueUpdateForm
     success_url = '/'
-    context_object_name = 'issue_details'
+    title = "Sorun"
 
 
-class AddIssueView(LoginRequiredMixin, CustomView):
+class ProductUpdateView(CustomUpdateView):
+    """Updates the product"""
+    model = Product
+    form_class = ProductUpdateForm
+    success_url = "/"
+    title = "Ürün"
+
+
+class CustomerUpdateView(CustomUpdateView):
+    """Updates the customer"""
+    model = Customer
+    form_class = CustomerUpdateForm
+    success_url = "/"
+    title = "Müşteri"
+
+
+class CategoryUpdateView(CustomUpdateView):
+    """Updates the category"""
+    model = Category
+    form_class = CategoryUpdateForm
+    success_url = "/"
+    title = "Kategori"
+
+
+class AddIssueView(CustomView):
     """
     Creates new issues.
     """
     form_class = AddIssueForm
-    template_name = 'issues/basic_form.html'
     success_url = "/"
-    title = "Yeni Sorun Ekle"     # test variable for template
+    title = "Yeni Sorun Ekle"
 
     def form_valid(self, form):
         form.instance.tech_guy = self.request.user  # we are assigning tech_guy with request.user
         return super(AddIssueView, self).form_valid(form)
 
 
-class AddCustomerView(LoginRequiredMixin, CustomView):
+class AddCustomerView(CustomView):
     """Creates new customers"""
     form_class = CustomerForm
-    template_name = "issues/basic_form.html"
-    success_url = "/"
     title = "Yeni Müşteri Ekle"
+
+    def get_success_url(self):
+        return reverse('new_category')
 
     def form_valid(self, form):
         form.instance.registered_by = self.request.user
         return super(AddCustomerView, self).form_valid(form)
 
 
-class AddCategoryView(LoginRequiredMixin, CustomView):
+class AddCategoryView(CustomView):
     """Creates new categories"""
     form_class = CategoryForm
-    template_name = "issues/basic_form.html"
-    success_url = "/"
     title = "Yeni Kategori Ekle"
 
+    def get_success_url(self):
+        return reverse('new_product')
 
-class AddProductView(LoginRequiredMixin, CustomView):
+
+class AddProductView(CustomView):
     """Creates new products"""
     form_class = ProductForm
-    template_name = "issues/basic_form.html"
-    success_url = "/"
     title = "Yeni Ürün Ekle"
+
+    def get_success_url(self):
+        return reverse('new_issue')
 
 
 class UserView(PermissionRequiredMixin, CustomView):

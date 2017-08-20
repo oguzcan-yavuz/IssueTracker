@@ -1,59 +1,43 @@
 {% extends 'issues/base.html' %}
 {% load bootstrap3 %}
 {% block body %}
-        <div class="row">
-            <div class="col-lg-12">
-                <h2>Issues</h2>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped">
-                        <thead>
-                          <tr>
-                              <th>Customer Name</th>
-                              <th>Issue Name</th>
-                              <th>Product Name</th>
-                              <th>Todo</th>
-                              <th>Phone</th>
-                              <th>Status</th>
-                              <th>Creation Time</th>
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Issues</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Issue Name</th>
+                        <th>Product Name</th>
+                        <th>Todo</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Creation Time</th>
 
-                          </tr>
-                      </thead>
-                      <tbody>
-    {% for issue in issue_list %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for issue in issue_list %}
 
-                            <tr class="active">
-                                <td>{{ issue.customer }}</td>
-                                <td><a href="{% url 'issue_detail' pk=issue.pk %}">{{ issue.name }}</a></td>
-                                <td>Product Name</td>
-                                <td>{{ issue.todo_list }}</td>
-                                <td>{{ issue.customer.phone }}</td>
-                                <td>{{ issue.status }}</td>
-                                <td>{{ issue.creation_time }}</td>
-                            </tr>
+                        <tr class="active">
+                            <td>{{ issue.customer }}</td>
+                            <td><a href="{% url 'issue_update' pk=issue.pk %}">{{ issue.name }}</a></td>
+                            <td>Product Name</td>
+                            <td>{{ issue.todo_list }}</td>
+                            <td>{{ issue.customer.phone }}</td>
+                            <td>{{ issue.status }}</td>
+                            <td>{{ issue.creation_time }}</td>
+                        </tr>
 
-    {% endfor %}
+                    {% endfor %}
 
-  </tbody>
-</table>
-</div>
-</div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-</div>
-<!-- /.row -->
+    </div>
+    <!-- /.row -->
 {% endblock %}
-
-
-<!-- <p>
-    Issue Name: <a href="{% url 'issue_detail' pk=issue.pk %}">{{ issue.name }}</a>
-</p>
-<p>Creation Time: {{ issue.creation_time }}</p>
-<p>Product: {{ issue.product }}</p>
-<p>Responsible Tech Guy: {{ issue.tech_guy }}</p>
-<p>Status: {{ issue.status }}</p>
-<p>Price: {{ issue.price }}</p>
-<p>Customer Name: {{ issue.customer }}</p>
-<p>Customer Phone: {{ issue.customer.phone }}</p>
-<p>TODO: {{ issue.todo_list }}</p>
-<p>DONE: {{ issue.done_list }}</p>
-<p>Registered by: {{ issue.customer.registered_by }}</p>
-<br> -->
