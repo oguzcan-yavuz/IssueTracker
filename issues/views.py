@@ -6,13 +6,29 @@ from .forms import *
 from .models import Issue
 
 
-class MainView(LoginRequiredMixin, ListView):
+class IssueListView(LoginRequiredMixin, ListView):
+    """Lists all issues"""
     context_object_name = 'issue_list'   # changes the variable name that passes to the template
     template_name = 'issues/index.html'
     queryset = Issue.objects.all().order_by("-creation_time")   # queryset = Issue.objects.all() | model = Issue
 
 
+class ProductListView(LoginRequiredMixin, ListView):
+    """Lists all products"""
+    context_object_name = 'product_list'
+    template_name = 'issues/products.html'
+    model = Product
+
+
+class CustomerListView(LoginRequiredMixin, ListView):
+    """Lists all customers"""
+    context_object_name = 'customer_list'
+    template_name = 'issues/customers.html'
+    queryset = Customer.objects.all().order_by("-creation_time")
+
+
 class CustomView(LoginRequiredMixin, CreateView):
+    """Base view for Issue, Product, Customer and Category CreateViews."""
     template_name = "issues/basic_form.html"
     title = ""
 
@@ -23,20 +39,9 @@ class CustomView(LoginRequiredMixin, CreateView):
 
 
 class CustomUpdateView(LoginRequiredMixin, UpdateView):
+    """Base update view"""
     template_name = 'issues/basic_update.html'
     title = ""
-
-
-class ProductView(LoginRequiredMixin, ListView):
-    context_object_name = 'products'   # changes the variable name that passes to the template
-    template_name = 'issues/products.html'
-    model = Product   # queryset = Issue.objects.all() | model = Issue
-    title=""
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["custom_title"] = self.title
-        return context
 
 
 class IssueUpdateView(CustomUpdateView):
@@ -72,9 +77,7 @@ class CategoryUpdateView(CustomUpdateView):
 
 
 class AddIssueView(CustomView):
-    """
-    Creates new issues.
-    """
+    """Creates new issues."""
     form_class = AddIssueForm
     success_url = "/"
     title = "Yeni Sorun Ekle"
@@ -116,9 +119,7 @@ class AddProductView(CustomView):
 
 
 class UserView(PermissionRequiredMixin, CustomView):
-    """
-    Creates new tech guys...
-    """
+    """Creates new tech guys..."""
     permission_required = 'user.is_superuser'
     form_class = UserForm
     template_name = "issues/register.html"
