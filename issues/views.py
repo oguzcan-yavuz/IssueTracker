@@ -13,15 +13,15 @@ class IssueListView(LoginRequiredMixin, ListView):
 
 
 class ProductListView(LoginRequiredMixin, ListView):
-    context_object_name = 'products'
+    context_object_name = 'product_list'
     template_name = 'issues/products.html'
     model = Product
-    title = ""
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["custom_title"] = self.title
-        return context
+
+class CustomerListView(LoginRequiredMixin, ListView):
+    context_object_name = 'customer_list'
+    template_name = 'issues/customers.html'
+    queryset = Customer.objects.all().order_by("-creation_time")
 
 
 class CustomView(LoginRequiredMixin, CreateView):
