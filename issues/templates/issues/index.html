@@ -15,13 +15,12 @@
                         <th>Phone</th>
                         <th>Status</th>
                         <th>Creation Time</th>
-
                     </tr>
                     </thead>
                     <tbody>
                     {% for issue in issue_list %}
-
-                        <tr class="active">
+                      {% if issue.status == 'QU' %}
+                        <tr class="danger">
                             <td>{{ issue.customer }}</td>
                             <td><a href="{% url 'issue_update' pk=issue.pk %}">{{ issue.name }}</a></td>
                             <td>{{ issue.product}}</td>
@@ -30,6 +29,27 @@
                             <td>{{ issue.status }}</td>
                             <td>{{ issue.creation_time }}</td>
                         </tr>
+                      {% elif issue.status == 'FI'%}
+                      <tr class="warning">
+                          <td>{{ issue.customer }}</td>
+                          <td><a href="{% url 'issue_update' pk=issue.pk %}">{{ issue.name }}</a></td>
+                          <td>{{ issue.product}}</td>
+                          <td>{{ issue.todo_list }}</td>
+                          <td>{{ issue.customer.phone }}</td>
+                          <td>{{ issue.status }}</td>
+                          <td>{{ issue.creation_time }}</td>
+                      </tr>
+                      {% elif issue.status == 'DO'%}
+                      <tr class="success">
+                          <td>{{ issue.customer }}</td>
+                          <td><a href="{% url 'issue_update' pk=issue.pk %}">{{ issue.name }}</a></td>
+                          <td>{{ issue.product}}</td>
+                          <td>{{ issue.todo_list }}</td>
+                          <td>{{ issue.customer.phone }}</td>
+                          <td>{{ issue.status }}</td>
+                          <td>{{ issue.creation_time }}</td>
+                      </tr>
+                      {% endif %}
 
                     {% endfor %}
 
