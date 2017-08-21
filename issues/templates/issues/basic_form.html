@@ -17,14 +17,13 @@
         </ol>
     </div>
 </div>
-    {# example #}
-    <a href="{% url redirect_url %}">debug</a>
 <!-- /.row -->
 {% endblock %}
 {% block body %}
     <form action="." method="POST" autocomplete="on" >
         {% csrf_token %}
         {% bootstrap_form form %}
+        <a href="{% url redirect_url %}" class="btn btn-warning">Pass</a>
         <button type="submit">Add</button>
     </form>
 {% endblock %}
