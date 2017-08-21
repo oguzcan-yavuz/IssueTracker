@@ -13,6 +13,7 @@ class Issue(models.Model):
     )
     name = models.CharField(max_length=1000)
     creation_time = models.DateTimeField(auto_now_add=True)
+    delivery_time = models.DateTimeField(blank=True, null=True)
     product = models.ForeignKey('Product', related_name="broken_product")
     tech_guy = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True)
     status = models.CharField(default='QU', max_length=2, choices=STATUSES)

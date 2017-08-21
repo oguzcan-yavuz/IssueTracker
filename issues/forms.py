@@ -48,7 +48,7 @@ class IssueUpdateForm(forms.ModelForm):
     """Updates the issue"""
     class Meta:
         model = Issue
-        fields = ('name', 'status', 'price', 'todo_list', 'done_list')
+        fields = ('name', 'delivery_time', 'status', 'price', 'todo_list', 'done_list')
 
 
 class ProductUpdateForm(forms.ModelForm):
