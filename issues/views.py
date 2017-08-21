@@ -6,6 +6,8 @@ from .forms import *
 from .models import Issue
 
 
+# ListViews
+
 class IssueListView(LoginRequiredMixin, ListView):
     """Lists all issues"""
     context_object_name = 'issue_list'   # changes the variable name that passes to the template
@@ -30,16 +32,7 @@ class CustomerListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
 
-class CustomView(LoginRequiredMixin, CreateView):
-    """Base view for Issue, Product, Customer and Category CreateViews."""
-    template_name = "issues/basic_form.html"
-    title = ""
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["custom_title"] = self.title
-        return context
-
+# Base UpdateView
 
 class CustomUpdateView(LoginRequiredMixin, UpdateView):
     """Base update view"""
@@ -51,6 +44,8 @@ class CustomUpdateView(LoginRequiredMixin, UpdateView):
         context["custom_title"] = self.title
         return context
 
+
+# UpdateViews
 
 class IssueUpdateView(CustomUpdateView):
     """Updates the issue"""
@@ -84,6 +79,21 @@ class CategoryUpdateView(CustomUpdateView):
     success_url = "/"
     title = "Kategori"
 
+
+# Base CreateView
+
+class CustomView(LoginRequiredMixin, CreateView):
+    """Base view for Issue, Product, Customer and Category CreateViews."""
+    template_name = "issues/basic_form.html"
+    title = ""
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["custom_title"] = self.title
+        return context
+
+
+# CreateViews
 
 class AddIssueView(CustomView):
     """Creates new issues."""
@@ -126,6 +136,8 @@ class AddProductView(CustomView):
     def get_success_url(self):
         return reverse('new_issue')
 
+
+# Registration (superuser only)
 
 class UserView(PermissionRequiredMixin, CustomView):
     """Creates new tech guys..."""

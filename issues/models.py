@@ -2,7 +2,10 @@ from django.db import models
 from django.conf import settings
 
 
+# Issue
+
 class Issue(models.Model):
+    """Issue model has relation with Product and Customer models with ForeignKey."""
     STATUSES = (
         ('QU', 'IN QUEUE'),
         ('FI', 'FIXING'),
@@ -22,7 +25,10 @@ class Issue(models.Model):
         return "{0}: {1}".format(self.pk, self.name)
 
 
+# Customer
+
 class Customer(models.Model):
+    """Customer model has relation with User model(ForeignKey) to keep who registered them."""
     GENDERS = (
         ("M", "MALE"),
         ("F", "FEMALE")
@@ -42,7 +48,10 @@ class Customer(models.Model):
         return "{0}".format(self.name)
 
 
+# Product
+
 class Product(models.Model):
+    """Product model has relation with Category model with ForeignKey."""
     COLORS = (
         ("red", "KIRMIZI"),
         ("green", "YEŞİL"),
@@ -64,6 +73,8 @@ class Product(models.Model):
     def __str__(self):
         return "{0}".format(self.name)
 
+
+# Category
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)

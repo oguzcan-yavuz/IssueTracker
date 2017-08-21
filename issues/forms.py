@@ -6,6 +6,8 @@ from django.forms import HiddenInput
 from issues.models import *
 
 
+# New model creation forms
+
 class AddIssueForm(forms.ModelForm):
     """Creates new issues."""
     class Meta:
@@ -40,6 +42,8 @@ class CategoryForm(forms.ModelForm):
         fields = ('name',)
 
 
+# Update Forms
+
 class IssueUpdateForm(forms.ModelForm):
     """Updates the issue"""
     class Meta:
@@ -67,6 +71,8 @@ class CategoryUpdateForm(forms.ModelForm):
         model = Category
         exclude = tuple()
 
+
+# Registration Form
 
 class UserForm(UserCreationForm):
     """Creates new technical support users"""
