@@ -94,7 +94,7 @@ class CustomView(LoginRequiredMixin, CreateView):
     """Base view for Issue, Product, Customer and Category CreateViews."""
     template_name = "issues/basic_form.html"
     title = ""
-    redirect_url = ""
+    redirect_url = "main"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

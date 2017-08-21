@@ -45,11 +45,11 @@
         function setChart(label_array, value_array) {
             var ctx = document.getElementById("myChart");
             var myChart = new Chart(ctx, {
-                type: 'polarArea',
+                type: 'horizontalBar',
                 data: {
                     labels: label_array,
                     datasets: [{
-                        label: '# of Votes',
+                        label: '',
                         data: value_array,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
