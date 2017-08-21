@@ -5,6 +5,7 @@ urlpatterns = [
     url(r'^$', IssueListView.as_view(), name="main"),
     url(r'^products/$', ProductListView.as_view(), name="product_list_url"),
     url(r'^customers/$', CustomerListView.as_view(), name="customer_list_url"),
+    url(r'^categories/$', CategoryListView.as_view(), name="category_list_url"),
     url(r'^issues/add/issue/$', AddIssueView.as_view(), name="new_issue"),
     url(r'^issues/add/customer/$', AddCustomerView.as_view(), name="new_customer"),
     url(r'^issues/add/category/$', AddCategoryView.as_view(), name="new_category"),
