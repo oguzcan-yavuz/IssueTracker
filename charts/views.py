@@ -15,9 +15,11 @@ class ChartData(APIView):
     permission_classes = []
 
     def get(self, request, format=None):
+        labels = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
+        values = [12, 21, 31, 43, 57, 3]
         data = {
-            "sales": 100,
-            "customers": 23,
+            "labels": labels,
+            "values": values,
         }
         return Response(data)
 

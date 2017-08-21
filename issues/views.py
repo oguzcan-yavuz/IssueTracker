@@ -32,6 +32,14 @@ class CustomerListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
 
+class CategoryListView(LoginRequiredMixin, ListView):
+    """Lists all categories"""
+    context_object_name = 'category_list'
+    template_name = 'issues/categories.html'
+    model = Category
+    paginate_by = 10
+
+
 # Base UpdateView
 
 class CustomUpdateView(LoginRequiredMixin, UpdateView):
@@ -112,7 +120,7 @@ class AddCustomerView(CustomView):
     title = "Yeni Müşteri Ekle"
 
     def get_success_url(self):
-        return reverse('new_category')
+        return reverse('new_product')
 
     def form_valid(self, form):
         form.instance.registered_by = self.request.user
@@ -123,9 +131,7 @@ class AddCategoryView(CustomView):
     """Creates new categories"""
     form_class = CategoryForm
     title = "Yeni Kategori Ekle"
-
-    def get_success_url(self):
-        return reverse('new_product')
+    success_url = '/'
 
 
 class AddProductView(CustomView):
