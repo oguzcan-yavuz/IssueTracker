@@ -94,10 +94,12 @@ class CustomView(LoginRequiredMixin, CreateView):
     """Base view for Issue, Product, Customer and Category CreateViews."""
     template_name = "issues/basic_form.html"
     title = ""
+    redirect_url = ""
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["custom_title"] = self.title
+        context["redirect_url"] = self.redirect_url
         return context
 
 
@@ -108,6 +110,7 @@ class AddIssueView(CustomView):
     form_class = AddIssueForm
     success_url = "/"
     title = "Yeni Sorun Ekle"
+    redirect_url = "main"
 
     def form_valid(self, form):
         form.instance.tech_guy = self.request.user  # we are assigning tech_guy with request.user
@@ -118,6 +121,7 @@ class AddCustomerView(CustomView):
     """Creates new customers"""
     form_class = CustomerForm
     title = "Yeni Müşteri Ekle"
+    redirect_url = "new_product"
 
     def get_success_url(self):
         return reverse('new_product')
@@ -138,6 +142,7 @@ class AddProductView(CustomView):
     """Creates new products"""
     form_class = ProductForm
     title = "Yeni Ürün Ekle"
+    redirect_url = "new_issue"
 
     def get_success_url(self):
         return reverse('new_issue')
