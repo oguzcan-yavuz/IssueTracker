@@ -58,6 +58,7 @@ class IssueUpdateView(CustomUpdateView):
     form_class = IssueUpdateForm
     success_url = '/'
     title = "Sorun"
+    context_object_name = "current_issues"
 
 
 class ProductUpdateView(CustomUpdateView):
