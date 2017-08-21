@@ -50,7 +50,7 @@
                     <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                       <li>
-                          <a href="#"><i class="fa fa-fw fa-power-off"></i>Oturum Kapat</a>
+                          <a href="{% url 'logout' %}"><i class="fa fa-fw fa-power-off"></i>Oturum Kapat</a>
                       </li>
                   </ul>
               </li>
@@ -107,15 +107,6 @@
                     </ul>
                 </li>
                 {% endif %}
-
-                <li>
-
-                </li>
-                <li>
-                    <a href="{% url 'logout' %}"><i class="fa fa-fw fa-sign-out"></i>Logout</a>
-                </li>
-
-
             </ul>
         </div>
         <!-- /.navbar-collapse -->
