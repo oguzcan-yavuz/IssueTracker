@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import *
+from django.views.generic import ListView, CreateView, UpdateView
 from django.shortcuts import reverse
 
 from .forms import *
