@@ -90,6 +90,9 @@
                           <li>
                               <a href="{% url 'new_category' %}">New Category</a>
                           </li>
+                          <li>
+                              <a href="{% url 'category_list_url' %}">All Categories</a>
+                          </li>
                       </ul>
                   </li>
                 {% if request.user.is_superuser %}
