@@ -26,7 +26,7 @@
                             <td>{{ issue.product}}</td>
                             <td>{{ issue.todo_list }}</td>
                             <td>{{ issue.customer.phone }}</td>
-                            <td><i class="fa fa-pause">Qeue</i></td>
+                            <td><i class="fa fa-pause"> -Queue</i></td>
                             <td>{{ issue.creation_time }}</td>
                         </tr>
                       {% elif issue.status == 'FI'%}
@@ -36,7 +36,7 @@
                           <td>{{ issue.product}}</td>
                           <td>{{ issue.todo_list }}</td>
                           <td>{{ issue.customer.phone }}</td>
-                          <td><i class="fa fa-spinner">Fixing</i></td>
+                          <td><i class="fa fa-spinner"> -Fixing</i></td>
                           <td>{{ issue.creation_time }}</td>
                       </tr>
                       {% elif issue.status == 'DO'%}
@@ -46,7 +46,7 @@
                           <td>{{ issue.product}}</td>
                           <td>{{ issue.todo_list }}</td>
                           <td>{{ issue.customer.phone }}</td>
-                          <td><i class="fa fa-check-circle">Done</i></td>
+                          <td><i class="fa fa-check-circle"> -Done</i></td>
                           <td>{{ issue.creation_time }}</td>
                       </tr>
                       {% endif %}

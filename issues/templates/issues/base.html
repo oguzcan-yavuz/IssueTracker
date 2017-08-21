@@ -83,9 +83,8 @@
                           </li>
                       </ul>
                   </li>
-
                   <li>
-                      <a href="javascript:;" data-toggle="collapse" data-target="#categories"><i class="fa fa-fw fa-tags"></i> Categories <i class="fa fa-fw fa-caret-down"></i></a>
+                      <a href="javascript:" data-toggle="collapse" data-target="#categories"><i class="fa fa-fw fa-tags"></i> Categories <i class="fa fa-fw fa-caret-down"></i></a>
                       <ul id="categories" class="collapse">
                           <li>
                               <a href="{% url 'new_category' %}">New Category</a>
@@ -97,12 +96,10 @@
                   </li>
                 {% if request.user.is_superuser %}
                   <li>
-                      <a href="javascript:;" data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-user-md" ></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
+                      <a href="javascript:" data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-user-md" ></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
                       <ul id="users" class="collapse">
                           <li>
-
                                 <a href="{% url 'register' %}"><i class="fa fa-fw fa-edit"></i>Register</a>
-
                         </li>
                     </ul>
                 </li>
