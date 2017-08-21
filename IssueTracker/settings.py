@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'issues',
     'charts',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
