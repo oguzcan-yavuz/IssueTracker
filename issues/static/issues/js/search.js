@@ -1,12 +1,29 @@
-$("#txtSearch").change(function() {
-  var text = document.getElementById("txtSearch").value;
+$("#txtSearch").keypress(function() {
   $("#listResult").html("");
   $(".mask").show();
   $.ajax({
     method : "GET",
     url : "http://127.0.0.1:8000/charts/rest/"
   }).then(function (response){
-    $("#listResult").append("<li>" + response.labels + "</li>");
+    var results;
+    var name = document.getElementById("txtSearch").value;
+    name = name.toUpperCase();
+    results = $.map(response.issues, function(entry) {
+        if(entry.name.toUpperCase().indexOf(name) !== -1){
+            $("#listResult").append("<li>" + entry.name + "</li>");
+        }
+    });
+
+    // var results = [];
+    // var searchField = "name";
+    // for (var i=0 ; i < response.issues.length ; i++)
+    // {
+    //     if (response.issues[i][searchField] == text) {
+    //         results.push(response.issues[i]);
+    //         $("#listResult").append("<li>" + response.issues[i][searchField] + "</li>");
+    //     }
+    // }
+
   });
 });
 
