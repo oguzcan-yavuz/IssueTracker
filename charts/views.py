@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from rest_framework.generics import ListAPIView, RetrieveAPIView
@@ -7,21 +8,11 @@ from rest_framework.response import Response
 from .serializers import *
 
 
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'charts/chart.html'
 
 
-class ChartDataView(ListAPIView):
-    queryset = Issue.objects.all()
-    serializer_class = IssueSerializer
-
-
-class ChartDetailView(RetrieveAPIView):
-    queryset = Issue.objects.all()
-    serializer_class = IssueSerializer
-
-
-class ChartView(APIView):
+class ChartView(LoginRequiredMixin, APIView):
 
     def get(self, request, format=None):
         users = get_user_model().objects.all()
