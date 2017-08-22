@@ -66,7 +66,7 @@ $("#close").click(function(e){
     $(".mask").hide();
 });
 
-$(document).on('keyup',function(e){
+$(document).keyup(function(e){
   var key = e.keyCode ? e.keyCode : e.which;
     if (e.keyCode == 27) {
       $(".mask").hide();
@@ -76,7 +76,7 @@ $(document).on('keyup',function(e){
     }
 });
 
-$("#txtSearch").keyup(function(e){
+$("#txtSearch").keyup(function(){
   var name = document.getElementById("txtSearch").value.toUpperCase();
   $.ajax({
     method : "GET",
