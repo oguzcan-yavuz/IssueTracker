@@ -1,44 +1,44 @@
-$("#txtSearch").keypress(function() {
-  $("#listResult").html("");
-  $(".mask").show();
-  $.ajax({
-    method : "GET",
-    url : "http://127.0.0.1:8000/charts/rest/"
-  }).then(function (response){
-    var results;
-    var name = document.getElementById("txtSearch").value;
-    name = name.toUpperCase();
-    results = $.map(response.issues, function(entry) {
-        if(entry.name.toUpperCase().indexOf(name) !== -1){
-            $("#listResult").append("<li>" + entry.name + "</li>");
-        }
-    });
-
-    // var results = [];
-    // var searchField = "name";
-    // for (var i=0 ; i < response.issues.length ; i++)
-    // {
-    //     if (response.issues[i][searchField] == text) {
-    //         results.push(response.issues[i]);
-    //         $("#listResult").append("<li>" + response.issues[i][searchField] + "</li>");
-    //     }
-    // }
-
+//Issues objesinin içindeki veriye göre sonuçları listeler.
+function searchFunc(response,name){
+  $("#issuesResult").html("");
+  $.map(response.issues, function(entry) {
+      if(entry.name.toUpperCase().indexOf(name) !== -1){
+          $("#issuesResult").append("<li>" + entry.name + "</li>");
+      }
   });
-});
 
-$("#search").submit(function(e){
-    return false;
-});
+  $("#customersResult").html("");
+  $.map(response.customers, function(entry) {
+      if(entry.name.toUpperCase().indexOf(name) !== -1){
+          $("#customersResult").append("<li>" + entry.name + "</li>");
+      }
+  });
+
+  $("#productsResult").html("");
+  $.map(response.products, function(entry) {
+      if(entry.name.toUpperCase().indexOf(name) !== -1){
+          $("#productsResult").append("<li>" + entry.name + "</li>");
+      }
+  });
+
+}
 
 $("#close").click(function(e){
     $(".mask").hide();
 });
 
-window.onkeyup = function(e) {
-   var key = e.keyCode ? e.keyCode : e.which;
-   if (key == 27) {
-       $(".mask").hide();
-   }
+$("#txtSearch").keyup(function(e){
+  $(".mask").show();
+  var name = document.getElementById("txtSearch").value.toUpperCase();
+  var key = e.keyCode ? e.keyCode : e.which;
+    if (key == 27) {
+      $(".mask").hide();
+    }
 
-}
+  $.ajax({
+    method : "GET",
+    url : "http://127.0.0.1:8000/charts/rest/"
+  }).then(function (response){
+    searchFunc(response,name);
+  });
+});
