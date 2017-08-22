@@ -1,7 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -27,8 +26,8 @@ class ChartView(LoginRequiredMixin, APIView):
         category_serializer = CategorySerializer(categories, many=True)
         user_serializer = UserSerializer(users, many=True)
 
-        labels = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
-        values = [12, 21, 31, 43, 57, 3]
+        labels = ["Sorun", "Müşteri", "Ürün", "Kategori"]
+        values = [len(issues), len(customers), len(products), len(categories)]
 
         data = {
             "labels": labels,
