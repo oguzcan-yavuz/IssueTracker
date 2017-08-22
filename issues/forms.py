@@ -10,6 +10,8 @@ from issues.models import *
 
 class AddIssueForm(forms.ModelForm):
     """Creates new issues."""
+    delivery_time = forms.DateField(widget=forms.SelectDateWidget)
+
     class Meta:
         model = Issue
         exclude = tuple('creation_time')
@@ -46,6 +48,8 @@ class CategoryForm(forms.ModelForm):
 
 class IssueUpdateForm(forms.ModelForm):
     """Updates the issue"""
+    delivery_time = forms.DateField(widget=forms.SelectDateWidget)
+
     class Meta:
         model = Issue
         fields = ('name', 'delivery_time', 'status', 'price', 'todo_list', 'done_list')
