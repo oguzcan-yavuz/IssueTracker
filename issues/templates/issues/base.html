@@ -29,7 +29,13 @@
 </head>
 <body>
 <div id="wrapper">
-
+    <div class="mask">
+      <div class="searchResult">
+        <span id="close"><i class="fa fa-fw fa-times">close</i></span>
+        <ul id="listResult">
+        </ul>
+      </div>
+    </div>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -44,6 +50,11 @@
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
+          <li>
+            <form class="" id="search" method="post">
+              <input type="search" id="txtSearch" value="" placeholder="search..">
+            </form>
+          </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
                     {{ request.user.username }}
@@ -124,7 +135,7 @@
 </div>
 <!-- jQuery -->
 <script src="{% static 'issues/js/jquery.js' %}"></script>
-
+<script src="{% static 'issues/js/search.js' %}"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{% static 'issues/js/bootstrap.min.js' %}"></script>
 

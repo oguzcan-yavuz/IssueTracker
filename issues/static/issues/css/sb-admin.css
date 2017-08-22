@@ -225,3 +225,27 @@ ul.alert-dropdown {
 .panel-yellow > a:hover {
     color: #df8a13;
 }
+
+.mask{
+  display: none;
+}
+
+#close{
+  cursor:pointer;
+}
+.searchResult{
+  width: 100%;
+  height: 100%;
+  z-index: 11;
+  position: fixed;
+  background: #000;
+  color: white;
+  opacity: 0.8;
+}
+.searchResult > ul {
+  list-style: none;
+}
+.searchResult > ul > li{
+  padding: 10px;
+  font-size: 24px;
+}
