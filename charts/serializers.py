@@ -33,4 +33,4 @@ class UserSerializer(ModelSerializer):
     class Meta:
         User = get_user_model()
         model = User
-        fields = '__all__'
+        exclude = ('password',)

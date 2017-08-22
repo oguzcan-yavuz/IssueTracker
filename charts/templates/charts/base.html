@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Bootstrap Core CSS -->
+    {% load static %}
+    <link href="{% static 'issues/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+<!-- jQuery -->
+<script src="{% static 'issues/js/jquery.js' %}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="{% static 'issues/js/bootstrap.min.js' %}"></script>
+<!-- http://www.chartjs.org/docs/latest/ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<script src="{% static 'charts/js/setChart.js' %}"></script>
+{% block content %}
+{% endblock %}
+<script>
+    {% block js %}
+    {% endblock %}
+</script>
+</body>
+</html>

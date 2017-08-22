@@ -7,11 +7,48 @@ from rest_framework.response import Response
 from .serializers import *
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
+class ChartView(LoginRequiredMixin, TemplateView):
     template_name = 'charts/chart.html'
 
 
-class ChartView(LoginRequiredMixin, APIView):
+class IssueChartView(LoginRequiredMixin, TemplateView):
+    template_name = 'charts/issue_chart.html'
+
+
+class IssueChartApiView(LoginRequiredMixin, APIView):
+
+    def get(self, request):
+        issue_fixing_durations = []
+        for obj in Issue.objects.all():
+            if obj.delivery_time is not None:
+                issue_fixing_durations.append((obj.delivery_time - obj.creation_time))
+        issue_ids = [obj.id for obj in Issue.objects.all()]
+        data = {
+            "labels": issue_ids,
+            "values": issue_fixing_durations,
+        }
+        return Response(data)
+
+
+class ChartApiView(LoginRequiredMixin, APIView):
+
+    def get(self, request):
+        issues_count = Issue.objects.count()
+        customers_count = Customer.objects.count()
+        products_count = Customer.objects.count()
+        categories_count = Category.objects.count()
+
+        labels = ["Sorun", "Müşteri", "Ürün", "Kategori"]
+        values = [issues_count, customers_count, products_count, categories_count]
+
+        data = {
+            "labels": labels,
+            "values": values,
+        }
+        return Response(data)
+
+
+class RestApiView(LoginRequiredMixin, APIView):
 
     def get(self, request, format=None):
         users = get_user_model().objects.all()
@@ -26,12 +63,7 @@ class ChartView(LoginRequiredMixin, APIView):
         category_serializer = CategorySerializer(categories, many=True)
         user_serializer = UserSerializer(users, many=True)
 
-        labels = ["Sorun", "Müşteri", "Ürün", "Kategori"]
-        values = [len(issues), len(customers), len(products), len(categories)]
-
         data = {
-            "labels": labels,
-            "values": values,
             "issues": issue_serializer.data,
             "customers": customer_serializer.data,
             "products": product_serializer.data,
@@ -39,4 +71,3 @@ class ChartView(LoginRequiredMixin, APIView):
             "users": user_serializer.data
         }
         return Response(data)
-
