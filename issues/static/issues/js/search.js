@@ -66,17 +66,17 @@ $("#close").click(function(e){
     $(".mask").hide();
 });
 
-$(document).on('keydown',function(e){
+$(document).on('keyup',function(e){
   var key = e.keyCode ? e.keyCode : e.which;
-    if (key == 27) {
+    if (e.keyCode == 27) {
       $(".mask").hide();
-    }else if (key == 17){
+    }else if (e.keyCode == 17){
+      document.getElementById('txtSearch').focus();
       $(".mask").show();
     }
 });
 
 $("#txtSearch").keyup(function(e){
-  $(".mask").show();
   var name = document.getElementById("txtSearch").value.toUpperCase();
   $.ajax({
     method : "GET",
