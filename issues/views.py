@@ -1,7 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import HttpResponseForbidden
-from django.views.generic import ListView, CreateView, UpdateView, FormView
-from django.shortcuts import reverse, get_object_or_404
+from django.views.generic import ListView, CreateView, UpdateView
 
 from .forms import *
 from .models import Issue
