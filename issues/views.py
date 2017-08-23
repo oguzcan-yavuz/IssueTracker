@@ -43,7 +43,6 @@ class CustomerHistoryView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         customer_id = self.kwargs['customer_id']
-        print(customer_id)
         return Issue.objects.filter(customer_id=customer_id)
 
 
