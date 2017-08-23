@@ -9,6 +9,8 @@ class Issue(models.Model):
     STATUSES = (
         ('QU', 'IN QUEUE'),
         ('FI', 'FIXING'),
+        ('RE', 'RETURN'),
+        ('CE', 'COMPONENTS EXPECTED'),
         ('DO', 'DONE'),
     )
     name = models.CharField(max_length=1000)
