@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import ListView, CreateView, UpdateView
-from django.shortcuts import reverse
+from django.http import HttpResponseForbidden
+from django.views.generic import ListView, CreateView, UpdateView, FormView
+from django.shortcuts import reverse, get_object_or_404
 
 from .forms import *
 from .models import Issue
@@ -30,6 +31,20 @@ class CustomerListView(LoginRequiredMixin, ListView):
     template_name = 'issues/customers.html'
     queryset = Customer.objects.all().order_by("-creation_time")
     paginate_by = 10
+
+
+# CustomerHistoryView
+
+class CustomerHistoryView(LoginRequiredMixin, ListView):
+    """lists specific customer's issues"""
+    template_name = 'issues/customer_histories.html'
+    context_object_name = 'customer_history'
+    paginate_by = 10
+    customer_id = 1
+    queryset = Issue.objects.filter(customer_id=customer_id)
+
+    def get(self, request, *args, **kwargs):
+        self.customer_id = self.kwargs['customer_id']
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
