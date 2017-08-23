@@ -40,12 +40,11 @@ class CustomerHistoryView(LoginRequiredMixin, ListView):
     template_name = 'issues/customer_histories.html'
     context_object_name = 'customer_history'
     paginate_by = 10
-    customer_id = 1
-    queryset = Issue.objects.filter(customer_id=customer_id)
 
-    def get(self, request, *args, **kwargs):
-        self.customer_id = self.kwargs['customer_id']
-        return super().get(request, *args, **kwargs)
+    def get_queryset(self):
+        customer_id = self.kwargs['customer_id']
+        print(customer_id)
+        return Issue.objects.filter(customer_id=customer_id)
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
