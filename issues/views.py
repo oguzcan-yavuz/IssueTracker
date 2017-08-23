@@ -58,7 +58,7 @@ class CustomerHistoryView(LoginRequiredMixin, ListView):
 # ProfitView (pagination may not work in templateview)
 
 class ProfitView(LoginRequiredMixin, View):
-    """Lists profit value between given dates."""
+    """Returns JSON data of issues with given date gaps and done status"""
 
     def get(self, request):
         if request.is_ajax():
@@ -66,6 +66,11 @@ class ProfitView(LoginRequiredMixin, View):
             last_date = request.GET.get('last_date')
             data = Issue.objects.filter(delivery_time__gte=first_date, delivery_time__lte=last_date, status='DO')
             return JsonResponse(data)
+
+
+class ProfitTemplateView(LoginRequiredMixin, TemplateView):
+    """Lists profit value between given dates."""
+    template_name = 'issues/profits.html'
 
 
 # Base UpdateView
