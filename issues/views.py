@@ -45,6 +45,7 @@ class CustomerHistoryView(LoginRequiredMixin, ListView):
 
     def get(self, request, *args, **kwargs):
         self.customer_id = self.kwargs['customer_id']
+        return super().get(request, *args, **kwargs)
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
