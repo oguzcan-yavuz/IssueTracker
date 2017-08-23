@@ -36,6 +36,7 @@
                     <th>Email</th>
                     <th>Address</th>
                     <th>Creation Time</th>
+                    <th>--</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,6 +48,7 @@
                         <td>{{ customer.email }}</td>
                         <td>{{ customer.address }}</td>
                         <td>{{ customer.creation_time }}</td>
+                        <td><a href="{% url 'customer_history' customer_id=customer.pk %}">History</a></td>
                     </tr>
 
                 {% endfor %}

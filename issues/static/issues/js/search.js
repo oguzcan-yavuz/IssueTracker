@@ -65,18 +65,16 @@ function searchFunc(response,name){
 $("#close").click(function(e){
     $(".mask").hide();
 });
-
 $(document).keyup(function(e){
   var key = e.keyCode ? e.keyCode : e.which;
     if (e.keyCode == 27) {
       $(".mask").hide();
-    }else if (e.keyCode == 17){
-      document.getElementById('txtSearch').focus();
-      $(".mask").show();
     }
 });
 
-$("#txtSearch").keyup(function(){
+$("#txtSearch").keyup(function(event){
+  event.preventDefault();
+  $(".mask").show();
   var name = document.getElementById("txtSearch").value.toUpperCase();
   $.ajax({
     method : "GET",

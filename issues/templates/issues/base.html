@@ -79,6 +79,9 @@
                     <a href="{% url 'main' %}" ><i class="fa fa-fw fa-home"></i> Homepage</a>
                   </li>
                   <li>
+                    <a href="{% url 'new_issue' %}"><i class="fa fa-fw fa-plus"></i>New Issue</a>
+                  </li>
+                  <li>
                       <a href="javascript:" data-toggle="collapse" data-target="#customer"><i class="fa fa-fw fa-users"></i> Customer <i class="fa fa-fw fa-caret-down"></i></a>
                       <ul id="customer" class="collapse">
                           <li>
@@ -108,6 +111,14 @@
                           </li>
                           <li>
                               <a href="{% url 'category_list_url' %}">All Categories</a>
+                          </li>
+                      </ul>
+                  </li>
+                  <li>
+                      <a href="javascript:" data-toggle="collapse" data-target="#statistics"><i class="fa fa-fw fa-bar-chart"></i> Statistics <i class="fa fa-fw fa-caret-down"></i></a>
+                      <ul id="statistics" class="collapse">
+                          <li>
+                              <a href="/charts/">Sample Chart</a>
                           </li>
                       </ul>
                   </li>
@@ -142,7 +153,6 @@
 <!-- jQuery -->
 <script src="{% static 'issues/js/jquery.js' %}"></script>
 <script src="{% static 'issues/js/search.js' %}"></script>
-
 {% block js %}
 {% endblock%}
 
