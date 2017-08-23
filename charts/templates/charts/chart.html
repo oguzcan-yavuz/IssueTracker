@@ -1,23 +1,28 @@
 {% extends 'charts/base.html' %}
 {% block content %}
-<div class="container">
-    <h4>Model Counts</h4>
-    <canvas id="myChart" width="100" height="100"></canvas>
-</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <h4>Model Counts</h4>
+                <canvas id="myChart" width="100" height="100"></canvas>
+            </div>
+            <div class="col-xs-6">
+                <h4>test</h4>
+                <canvas id="testChart"></canvas>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 <script>
     {% block js %}
         var endpoint = '/charts/rest/chart/';
-        var labels = [];
-        var values = [];
         $.ajax({
             method: "GET",
             url: endpoint,
             success: function (data) {
                 // get data from /chars/rest/ endpoint (powered by django rest framework)
-                labels = data.labels;
-                values = data.values;
-                setChart("myChart", labels, values, 'bar');
+                setChart("myChart", data.labels, data.values, 'bar');
+                setChart("testChart", data.labels, data.values, 'bar');
             },
             error: function (error_data) {
                 console.log("error: " + error_data)
