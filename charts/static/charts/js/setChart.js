@@ -5,7 +5,7 @@ function setChart(canvas_id, label_array, value_array, type) {
         data: {
             labels: label_array,
             datasets: [{
-                label: '',
+                label: ["Sistem Grafiği"],
                 data: value_array,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',

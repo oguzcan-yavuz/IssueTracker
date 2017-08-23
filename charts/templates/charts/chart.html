@@ -1,23 +1,21 @@
 {% extends 'issues/base.html' %}
 {% load static %}
-{% block content %}
-    <div class="container">
+{% block body %}
         <div class="row">
-            <div class="col-xs-6">
+            <div class="col-md-6">
                 <h4>Model Counts</h4>
-                <canvas id="myChart" width="100" height="100"></canvas>
+                <canvas id="myChart"></canvas>
             </div>
-            <div class="col-xs-6">
+            <div class="col-md-6">
                 <h4>test</h4>
                 <canvas id="testChart"></canvas>
             </div>
         </div>
-    </div>
 {% endblock %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
-<script src="{% static 'charts/js/setChart.js' %}"></script>
-<script>
     {% block js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <script src="{% static 'charts/js/setChart.js' %}"></script>
+    <script>
         var endpoint = '/charts/rest/chart/';
         $.ajax({
             method: "GET",
@@ -25,11 +23,11 @@
             success: function (data) {
                 // get data from /chars/rest/ endpoint (powered by django rest framework)
                 setChart("myChart", data.labels, data.values, 'bar');
-                setChart("testChart", data.labels, data.values, 'bar');
+                setChart("testChart", data.labels, data.values, 'line');
             },
             error: function (error_data) {
                 console.log("error: " + error_data)
             }
         });
+        </script>
     {% endblock %}
-</script>

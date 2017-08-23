@@ -1,6 +1,6 @@
 //Issues objesinin içindeki veriye göre sonuçları listeler.
 function searchFunc(response,name){
-  if(name.length > 2){
+  if(name.length > 1){
     $("#issuesResult").html("");
     $.map(response.issues, function(entry) {
 
