@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import JsonResponse
+from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 from django.shortcuts import reverse
 
@@ -56,15 +57,13 @@ class CustomerHistoryView(LoginRequiredMixin, ListView):
 
 # ProfitView (pagination may not work in templateview)
 
-class ProfitView(LoginRequiredMixin, TemplateView):
+class ProfitView(LoginRequiredMixin, View):
     """Lists profit value between given dates."""
-    template_name = 'issues/profits.html'
-    paginate_by = 2
 
-    def post(self, request):
+    def get(self, request):
         if request.is_ajax():
-            first_date = request.POST.get('first_date')
-            last_date = request.POST.get('last_date')
+            first_date = request.GET.get('first_date')
+            last_date = request.GET.get('last_date')
             data = Issue.objects.filter(delivery_time__gte=first_date, delivery_time__lte=last_date, status='DO')
             return JsonResponse(data)
 
