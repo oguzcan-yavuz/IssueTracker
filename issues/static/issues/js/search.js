@@ -80,6 +80,10 @@ $("#txtSearch").keyup(function(event){
     method : "GET",
     url : "http://127.0.0.1:8000/charts/rest/"
   }).then(function (response){
+
+$.get( "http://127.0.0.1:8000/profit_json/", { first_date: "2017-08-21", last_date: "2017-08-26" } );
+
     searchFunc(response,name);
   });
+
 });
