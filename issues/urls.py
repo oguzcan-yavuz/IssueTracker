@@ -12,6 +12,8 @@ urlpatterns = [
     # ProfitView url
     url(r'profit_json/$', ProfitView.as_view(), name="profit_json"),
     url(r'profits/$', ProfitTemplateView.as_view(), name="profits"),
+    # Category-Issue statistics url
+    url(r'categories/issues_json$', CategoryIssueStatisticsView.as_view(), name="category-issue_json"),
     # CreateView urls
     url(r'^issues/add/issue/$', AddIssueView.as_view(), name="new_issue"),
     url(r'^issues/add/customer/$', AddCustomerView.as_view(), name="new_customer"),

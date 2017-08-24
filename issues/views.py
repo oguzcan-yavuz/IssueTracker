@@ -80,6 +80,23 @@ class ProfitTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'issues/profits.html'
 
 
+# Category-Issue statistics
+
+class CategoryIssueStatisticsView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        if request.is_ajax():
+            first_date = request.GET.get('first_date')
+            last_date = request.GET.get('last_date')
+            first_date = datetime.strptime(first_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+            last_date = datetime.strptime(last_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+            category = request.GET.get('category')
+            data = Issue.objects.filter(creation_time__gte=first_date, creation_time__lte=last_date, product__category=category)
+            return JsonResponse(serializers.serialize('json', data), safe=False)
+        else:
+            return HttpResponseForbidden("<h1>403 FORBIDDEN</h1>")
+
+
 # Base UpdateView
 
 class CustomUpdateView(LoginRequiredMixin, UpdateView):
