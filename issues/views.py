@@ -100,6 +100,8 @@ class CategoryIssueStatisticsView(LoginRequiredMixin, View):
                 'product__category').annotate(count=Count('product__category'))
             # we did serialization this way because our queryset was ValuesQuerySet
             # regular django serializers can't serialize it.
+
+            # bu isleri tek view ile tek ajax ile halletmeye ne dersin delikanli?
             data = json.dumps(list(data), cls=DjangoJSONEncoder)
             return JsonResponse(data, safe=False)
         else:
