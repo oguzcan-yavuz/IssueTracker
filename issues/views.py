@@ -1,5 +1,8 @@
+import json
+
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core import serializers
+from django.core.serializers.json import DjangoJSONEncoder
 from django.http import JsonResponse, HttpResponseForbidden
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
@@ -95,7 +98,10 @@ class CategoryIssueStatisticsView(LoginRequiredMixin, View):
             last_date = datetime.strptime(last_date, "%Y-%m-%dT%H:%M:%S.%fZ")
             data = Issue.objects.filter(creation_time__gte=first_date, creation_time__lte=last_date).values(
                 'product__category').annotate(count=Count('product__category'))
-            return JsonResponse(serializers.serialize('json', data), safe=False)
+            # we did serialization this way because our queryset was ValuesQuerySet
+            # regular django serializers can't serialize it.
+            data = json.dumps(list(data), cls=DjangoJSONEncoder)
+            return JsonResponse(data, safe=False)
         else:
             return HttpResponseForbidden("<h1>403 FORBIDDEN</h1>")
 
