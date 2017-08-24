@@ -4,6 +4,7 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 from django.shortcuts import reverse
+from django.db.models import Count
 
 from .forms import *
 from .models import Issue
@@ -75,6 +76,8 @@ class ProfitView(LoginRequiredMixin, View):
             return HttpResponseForbidden("<h1>403 FORBIDDEN</h1>")
 
 
+# ProfitTemplateView
+
 class ProfitTemplateView(LoginRequiredMixin, TemplateView):
     """Lists profit value between given dates."""
     template_name = 'issues/profits.html'
@@ -90,8 +93,8 @@ class CategoryIssueStatisticsView(LoginRequiredMixin, View):
             last_date = request.GET.get('last_date')
             first_date = datetime.strptime(first_date, "%Y-%m-%dT%H:%M:%S.%fZ")
             last_date = datetime.strptime(last_date, "%Y-%m-%dT%H:%M:%S.%fZ")
-            category = request.GET.get('category')
-            data = Issue.objects.filter(creation_time__gte=first_date, creation_time__lte=last_date, product__category=category)
+            data = Issue.objects.filter(creation_time__gte=first_date, creation_time__lte=last_date).values(
+                'product__category').annotate(count=Count('product__category'))
             return JsonResponse(serializers.serialize('json', data), safe=False)
         else:
             return HttpResponseForbidden("<h1>403 FORBIDDEN</h1>")
