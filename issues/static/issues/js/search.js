@@ -1,3 +1,4 @@
+
 //Issues objesinin içindeki veriye göre sonuçları listeler.
 function searchFunc(response,name){
   if(name.length > 1){
@@ -44,7 +45,6 @@ function searchFunc(response,name){
 
     $("#productsResult").html("");
     $.map(response.products, function(entry) {
-        // serial_number is null diyor konsolda
         if(entry.name.toUpperCase().indexOf(name) !== -1 || entry.serial_number.toUpperCase().indexOf(name) !== -1){
             $("#productsResult").append(
               "<li>" +
@@ -92,6 +92,7 @@ function reformatDate(date){
   return formatDate;
 };
 
+
 $('#getProfits').click(function(){
     var first_date =  document.getElementById("first_date").value;
     var last_date =  document.getElementById("last_date").value;
@@ -99,8 +100,6 @@ $('#getProfits').click(function(){
     first_date = new Date(reformatDate(first_date)).toISOString();
     last_date =  new Date(reformatDate(last_date)).toISOString();
 
-    // var first_date = new Date("2017-08-23T12:00:00Z").toISOString(); 24 / 08 / 2017
-    // var last_date = new Date("2017-09-01T12:00:00Z").toISOString();
   $.ajax({
     method : "GET",
     url : "http://127.0.0.1:8000/profit_json/",
@@ -108,13 +107,32 @@ $('#getProfits').click(function(){
     {
       first_date: first_date,
       last_date: last_date
-    },
-    success:function(response){
-      // data: [{"model": "issues.issue", "pk": 1, "fields": {"name": "delivery time issue", "creation_time": "2017-08-24T12:05:28.067Z", "delivery_time": "2017-08-31T00:00:00Z", "product": 1, "tech_guy": 1, "status": "DO", "price": "0", "customer": 1, "todo_list": "", "done_list": ""}}]
-      console.log(response);
     }
-  })
-});
+  }).then(function(response){
+      response = JSON.parse(response);
+      var totalPrice= 0;
+      $("#profitsTable").html("");
+      $("#totalPrice").html("");
+      for (var i = 0; i < response.length; i++) {
+        $("#profitsTable").append(
+          "<tr>"+
+              "<td>"+
+              response[i].fields.name +
+              "</td>"+
+              "<td>"+
+              response[i].fields.done_list +
+              "</td>"+
+              "<td>"+
+              response[i].fields.price +
+              " TL</td>"+
+          "</tr>"
+        );
+        var totalPrice = totalPrice + parseInt(response[i].fields.price);
+      }
+      $("#totalPrice").append(totalPrice + " TL");
+    }); //then
+  }); // ajax
+
 
 $('#getCategory').click(function(){
     var first_date =  document.getElementById("first_date").value;
@@ -132,8 +150,7 @@ $('#getCategory').click(function(){
     {
       first_date: first_date,
       last_date: last_date
-    },
-    success:function(response){
+    },success:function(response){
       // data: [{"model": "issues.issue", "pk": 1, "fields": {"name": "delivery time issue", "creation_time": "2017-08-24T12:05:28.067Z", "delivery_time": "2017-08-31T00:00:00Z", "product": 1, "tech_guy": 1, "status": "DO", "price": "0", "customer": 1, "todo_list": "", "done_list": ""}}]
       console.log(response);
     }
