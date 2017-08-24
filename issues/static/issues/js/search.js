@@ -80,13 +80,39 @@ $("#txtSearch").keyup(function(event){
     method : "GET",
     url : "http://127.0.0.1:8000/charts/rest/"
   }).then(function (response){
-
-      var first_date = new Date("2017-08-23T12:00:00Z").toISOString();
-      var last_date = new Date("2017-09-01T12:00:00Z").toISOString();
-
-$.get( "http://127.0.0.1:8000/profit_json/", { first_date: first_date, last_date: last_date } );
     searchFunc(response,name);
     // data: [{"model": "issues.issue", "pk": 1, "fields": {"name": "delivery time issue", "creation_time": "2017-08-24T12:05:28.067Z", "delivery_time": "2017-08-31T00:00:00Z", "product": 1, "tech_guy": 1, "status": "DO", "price": "0", "customer": 1, "todo_list": "", "done_list": ""}}]
   })
 
 });
+
+$('#getProfits').click(function(){
+    var first_date = new Date("2017-08-23T12:00:00Z").toISOString();
+    var last_date = new Date("2017-09-01T12:00:00Z").toISOString();
+  $.ajax({
+    method : "GET",
+    url : "http://127.0.0.1:8000/profit_json/",
+    data :
+    {
+      first_date: first_date,
+      last_date: last_date
+    },
+    success:function(response){
+      console.log(response);
+    }
+  })
+})
+
+
+// $("#getProfits").click(function(){
+//   var first_date = new Date("2017-08-23T12:00:00Z").toISOString();
+//   var last_date = new Date("2017-09-01T12:00:00Z").toISOString();
+//   $.get("http://127.0.0.1:8000/profit_json/",
+//   {
+//       first_date: first_date,
+//       last_date: last_date
+//   },
+//   function(response, status){
+//       console.log("Data: " + response + "\nStatus: " + status);
+//   });
+// });
