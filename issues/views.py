@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core import serializers
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
@@ -6,6 +7,8 @@ from django.shortcuts import reverse
 
 from .forms import *
 from .models import Issue
+
+from datetime import datetime
 
 
 # ListViews
@@ -64,8 +67,14 @@ class ProfitView(LoginRequiredMixin, View):
         if request.is_ajax():
             first_date = request.GET.get('first_date')
             last_date = request.GET.get('last_date')
+            first_date = datetime.strptime(first_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+            last_date = datetime.strptime(last_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+            # print("AJAX: {0} {1} {2} {3}".format(type(first_date), first_date, type(last_date), last_date))
+            # print("DB: {0} {1}".format(type(Issue.objects.last().delivery_time), Issue.objects.last().delivery_time))
+            # print(first_date > datetime.replace(Issue.objects.last().delivery_time, tzinfo=None))
             data = Issue.objects.filter(delivery_time__gte=first_date, delivery_time__lte=last_date, status='DO')
-            return JsonResponse(data)
+            print("data: {0}".format(serializers.serialize('json', data)))
+            return JsonResponse(serializers.serialize('json', data), safe=False)
 
 
 class ProfitTemplateView(LoginRequiredMixin, TemplateView):
