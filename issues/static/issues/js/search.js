@@ -86,12 +86,48 @@ $("#txtSearch").keyup(function(event){
 
 });
 
+function reformatDate(date){
+  var formDate = date.split("/");
+  var formatDate = formDate[2]+"-"+formDate[0]+"-"+ formDate[1]+"T00:00:00Z";
+  return formatDate;
+};
+
 $('#getProfits').click(function(){
-    var first_date = new Date("2017-08-23T12:00:00Z").toISOString();
-    var last_date = new Date("2017-09-01T12:00:00Z").toISOString();
+    var first_date =  document.getElementById("first_date").value;
+    var last_date =  document.getElementById("last_date").value;
+
+    first_date = new Date(reformatDate(first_date)).toISOString();
+    last_date =  new Date(reformatDate(last_date)).toISOString();
+
+    // var first_date = new Date("2017-08-23T12:00:00Z").toISOString(); 24 / 08 / 2017
+    // var last_date = new Date("2017-09-01T12:00:00Z").toISOString();
   $.ajax({
     method : "GET",
     url : "http://127.0.0.1:8000/profit_json/",
+    data :
+    {
+      first_date: first_date,
+      last_date: last_date
+    },
+    success:function(response){
+      // data: [{"model": "issues.issue", "pk": 1, "fields": {"name": "delivery time issue", "creation_time": "2017-08-24T12:05:28.067Z", "delivery_time": "2017-08-31T00:00:00Z", "product": 1, "tech_guy": 1, "status": "DO", "price": "0", "customer": 1, "todo_list": "", "done_list": ""}}]
+      console.log(response);
+    }
+  })
+});
+
+$('#getCategory').click(function(){
+    var first_date =  document.getElementById("first_date").value;
+    var last_date =  document.getElementById("last_date").value;
+
+    first_date = new Date(reformatDate(first_date)).toISOString();
+    last_date =  new Date(reformatDate(last_date)).toISOString();
+
+    // var first_date = new Date("2017-08-23T12:00:00Z").toISOString(); 24 / 08 / 2017
+    // var last_date = new Date("2017-09-01T12:00:00Z").toISOString();
+  $.ajax({
+    method : "GET",
+    url : "http://127.0.0.1:8000/categories/issues_json/",
     data :
     {
       first_date: first_date,
