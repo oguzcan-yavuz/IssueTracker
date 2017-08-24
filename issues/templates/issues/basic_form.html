@@ -1,5 +1,9 @@
 {% extends 'issues/base.html' %}
 {% load bootstrap3 %}
+{% block css_includes %}
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+{% endblock %}
+
 {% block heading %}
     <!-- Page Heading -->
     <div class="row">
@@ -26,4 +30,12 @@
         <a href="{% url redirect_url %}" class="btn btn-warning">Pass</a>
         <button type="submit">Add</button>
     </form>
+{% endblock %}
+{% block js %}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
 {% endblock %}

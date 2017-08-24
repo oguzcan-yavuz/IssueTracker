@@ -15,6 +15,7 @@ class AddIssueForm(forms.ModelForm):
         exclude = tuple('creation_time')
         widgets = {
             "tech_guy": HiddenInput(),
+            "delivery_time": forms.DateInput(attrs={'class': 'datepicker'}),
         }
 
 
