@@ -44,6 +44,7 @@ function searchFunc(response,name){
 
     $("#productsResult").html("");
     $.map(response.products, function(entry) {
+        // serial_number is null diyor konsolda
         if(entry.name.toUpperCase().indexOf(name) !== -1 || entry.serial_number.toUpperCase().indexOf(name) !== -1){
             $("#productsResult").append(
               "<li>" +
@@ -101,7 +102,7 @@ $('#getProfits').click(function(){
       console.log(response);
     }
   })
-})
+});
 
 
 // $("#getProfits").click(function(){
