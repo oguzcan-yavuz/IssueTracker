@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core import serializers
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 from django.shortcuts import reverse
@@ -71,6 +71,8 @@ class ProfitView(LoginRequiredMixin, View):
             last_date = datetime.strptime(last_date, "%Y-%m-%dT%H:%M:%S.%fZ")
             data = Issue.objects.filter(delivery_time__gte=first_date, delivery_time__lte=last_date, status='DO')
             return JsonResponse(serializers.serialize('json', data), safe=False)
+        else:
+            return HttpResponseForbidden("<h1>403 FORBIDDEN</h1>")
 
 
 class ProfitTemplateView(LoginRequiredMixin, TemplateView):
