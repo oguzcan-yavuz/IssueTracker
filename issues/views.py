@@ -7,13 +7,14 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 from django.shortcuts import reverse
-from django.db.models import Count, Max, F, ExpressionWrapper, Avg, DurationField
+from django.db.models import Count, F, ExpressionWrapper, Avg, DurationField
 
 from .forms import *
 from .models import Issue
 
 from datetime import datetime
 from datetime import timedelta
+
 
 # ListViews
 
@@ -100,8 +101,8 @@ class StatisticView(LoginRequiredMixin, View):
                 current_date = first_date
                 while current_date <= last_date:
                     data.append(list(Issue.objects.filter(
-                    #   creation time tamamen ayni olmadigi icin filtre sonucu bos donuyor
-                    #   sadece gunleri kontrol ederek filtreleme yapmamiz lazim
+                        # creation time tamamen ayni olmadigi icin filtre sonucu bos donuyor (exact)
+                        # sadece gunleri kontrol ederek filtreleme yapmamiz lazim
                         creation_time__exact=current_date).values(
                         'customer').distinct().annotate(count=Count('customer'))) + [{'date': current_date}])
                     current_date += day
