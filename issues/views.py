@@ -13,7 +13,7 @@ from .forms import *
 from .models import Issue
 
 from datetime import datetime
-
+from datetime import timedelta
 
 # ListViews
 
@@ -96,10 +96,18 @@ class StatisticView(LoginRequiredMixin, View):
             elif statistic == 3:
                 """This statistic gives the customers's count which created issue in given
                 date gap."""
-                data = Issue.objects.filter(
-                    creation_time__gte=first_date, creation_time__lte=last_date).values(
-                    'customer').distinct().count()
-                return values_queryset_to_json(data)
+                data, day = [], timedelta(days=1)
+                current_date = first_date
+                while current_date <= last_date:
+                    data.append(list(Issue.objects.filter(
+                    #   creation time tamamen ayni olmadigi icin filtre sonucu bos donuyor
+                    #   sadece gunleri kontrol ederek filtreleme yapmamiz lazim
+                        creation_time__exact=current_date).values(
+                        'customer').distinct().annotate(count=Count('customer'))) + [{'date': current_date}])
+                    current_date += day
+                # return kismi values query set yerine liste verdigimiz icin sikinti cikarabilir
+                data = json.dumps(data, cls=DjangoJSONEncoder)
+                return JsonResponse(data, safe=False)
             elif statistic == 4:
                 """This statistic gives the customers which ordered by their issue count."""
                 data = Issue.objects.values('customer').annotate(count=Count('customer'))

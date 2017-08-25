@@ -10,6 +10,7 @@
                 <input type="datetime" id="first_date" placeholder="" class="datepicker">
                 <input type="datetime" id="last_date" placeholder="" class="datepicker">
                 <button type="button" id="getCategory">Get Results</button>
+                <button type="button" id="getstatic">Get static</button>
                 <canvas id="myChart"></canvas>
             </div>
         </div>
@@ -27,6 +28,7 @@
     </script>
 
     <script>
+
         var endpoint = 'http://127.0.0.1:8000/statistics/';
 
         $('#getCategory').click(function(){
@@ -50,6 +52,41 @@
               response = JSON.parse(response);
               var dataLabel = [] ;
               var data = [] ;
+              for (var i = 0; i < response.length; i++) {
+                dataLabel.push(response[i].product__category__name);
+                data.push(response[i].count);
+              }
+              setChart("myChart", dataLabel, data, 'bar');
+
+            }
+          })
+        });
+
+        var endpoint = 'http://127.0.0.1:8000/statistics/';
+
+        $('#getstatic').click(function(){
+            var first_date =  document.getElementById("first_date").value;
+            var last_date =  document.getElementById("last_date").value;
+
+            first_date = new Date(reformatDate(first_date)).toISOString();
+            last_date =  new Date(reformatDate(last_date)).toISOString();
+
+            // var first_date = new Date("2017-08-23T12:00:00Z").toISOString(); 24 / 08 / 2017
+            // var last_date = new Date("2017-09-01T12:00:00Z").toISOString();
+          $.ajax({
+            method : "GET",
+            url : endpoint,
+            data :
+            {
+              first_date: first_date,
+              last_date: last_date,
+              statistic: 3
+            },success:function(response){
+              console.log(response);
+              response = JSON.parse(response);
+              var dataLabel = [] ;
+              var data = [] ;
+              console.log(response);
               for (var i = 0; i < response.length; i++) {
                 dataLabel.push(response[i].product__category__name);
                 data.push(response[i].count);
