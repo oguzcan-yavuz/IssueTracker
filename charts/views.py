@@ -16,6 +16,9 @@ class IssueChartView(LoginRequiredMixin, TemplateView):
     template_name = 'charts/issue_chart.html'
 
 
+class CategoryIssueView(LoginRequiredMixin, TemplateView):
+    template_name = 'charts/category_issue.html'
+
 # returns issue's delivery_time and creation_time difference to calculate it's fixing duration
 
 class IssueChartApiView(LoginRequiredMixin, APIView):

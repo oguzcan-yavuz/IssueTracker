@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^rest/$', RestApiView.as_view(), name="rest"),
     url(r'^rest/chart/$', ChartApiView.as_view(), name="chart_api"),
     url(r'^rest/issue_chart/$', IssueChartApiView.as_view(), name='issue_api'),
+    url(r'^category_issue/$', CategoryIssueView.as_view(), name="category_issue_chart"),
 ]

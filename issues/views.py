@@ -76,7 +76,7 @@ class StatisticView(LoginRequiredMixin, View):
                 value = json.dumps(list(value), cls=DjangoJSONEncoder)
                 return JsonResponse(value, safe=False)
 
-            statistic = request.GET.get('statistic')
+            statistic = int(request.GET.get('statistic'))
             first_date = request.GET.get('first_date')
             last_date = request.GET.get('last_date')
             first_date = datetime.strptime(first_date, "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -91,7 +91,7 @@ class StatisticView(LoginRequiredMixin, View):
                 in given date gap."""
                 data = Issue.objects.filter(
                     creation_time__gte=first_date, creation_time__lte=last_date).values(
-                    'product__category').annotate(count=Count('product__category'))
+                    'product__category__name').annotate(count=Count('product__category'))
                 return values_queryset_to_json(data)
             elif statistic == 3:
                 """This statistic gives the customers's count which created issue in given
