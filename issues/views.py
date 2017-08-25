@@ -7,7 +7,7 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 from django.shortcuts import reverse
-from django.db.models import Count
+from django.db.models import Count, Max, F, ExpressionWrapper, Avg, DurationField
 
 from .forms import *
 from .models import Issue
@@ -21,7 +21,7 @@ class IssueListView(LoginRequiredMixin, ListView):
     """Lists all issues"""
     context_object_name = 'issue_list'   # changes the variable name that passes to the template
     template_name = 'issues/index.html'
-    queryset = Issue.objects.all().order_by("-creation_time")   # queryset = Issue.objects.all() | model = Issue
+    queryset = Issue.objects.all().order_by("-creation_time")
     paginate_by = 10
 
 
@@ -62,19 +62,60 @@ class CustomerHistoryView(LoginRequiredMixin, ListView):
         return Issue.objects.filter(customer_id=customer_id)
 
 
-# ProfitView (pagination may not work in templateview)
+# StatisticView
 
-class ProfitView(LoginRequiredMixin, View):
-    """Returns JSON data of issues with given date gaps and done status"""
+class StatisticView(LoginRequiredMixin, View):
+    """Returns JSON data of asked statistic."""
 
     def get(self, request):
         if request.is_ajax():
+
+            def values_queryset_to_json(value):
+                # We are doing serialization this way when our queryset is ValuesQuerySet.
+                # Because regular django serializers can't serialize it.
+                value = json.dumps(list(value), cls=DjangoJSONEncoder)
+                return JsonResponse(value, safe=False)
+
+            statistic = request.GET.get('statistic')
             first_date = request.GET.get('first_date')
             last_date = request.GET.get('last_date')
             first_date = datetime.strptime(first_date, "%Y-%m-%dT%H:%M:%S.%fZ")
             last_date = datetime.strptime(last_date, "%Y-%m-%dT%H:%M:%S.%fZ")
-            data = Issue.objects.filter(delivery_time__gte=first_date, delivery_time__lte=last_date, status='DO')
-            return JsonResponse(serializers.serialize('json', data), safe=False)
+            if statistic == 1:
+                """This statistic gives issues done in given date gaps."""
+                data = Issue.objects.filter(delivery_time__gte=first_date,
+                                            delivery_time__lte=last_date, status='DO')
+                return JsonResponse(serializers.serialize('json', data), safe=False)
+            elif statistic == 2:
+                """This statistic gives the issues's count which grouped by categories
+                in given date gap."""
+                data = Issue.objects.filter(
+                    creation_time__gte=first_date, creation_time__lte=last_date).values(
+                    'product__category').annotate(count=Count('product__category'))
+                return values_queryset_to_json(data)
+            elif statistic == 3:
+                """This statistic gives the customers's count which created issue in given
+                date gap."""
+                data = Issue.objects.filter(
+                    creation_time__gte=first_date, creation_time__lte=last_date).values(
+                    'customer').distinct().count()
+                return values_queryset_to_json(data)
+            elif statistic == 4:
+                """This statistic gives the customers which ordered by their issue count."""
+                data = Issue.objects.values('customer').annotate(count=Count('customer'))
+                return values_queryset_to_json(data)
+            elif statistic == 5:
+                """This statistic gives the most trouble products."""
+                data = Issue.objects.values('product').annotate(count=Count('product'))
+                return values_queryset_to_json(data)
+            elif statistic == 6:
+                """This statistic gives the average time of problem solve of tech guys
+                and count of problems they have solved."""
+                data = Issue.objects.filter(status='DO').values('tech_guy').annotate(
+                    ort=Avg(ExpressionWrapper(F('delivery_time') - F('creation_time'),
+                                              output_field=DurationField()))).order_by('ort').annotate(
+                    count=Count('tech_guy'))
+                return values_queryset_to_json(data)
         else:
             return HttpResponseForbidden("<h1>403 FORBIDDEN</h1>")
 
@@ -84,28 +125,6 @@ class ProfitView(LoginRequiredMixin, View):
 class ProfitTemplateView(LoginRequiredMixin, TemplateView):
     """Lists profit value between given dates."""
     template_name = 'issues/profits.html'
-
-
-# Category-Issue statistics
-
-class CategoryIssueStatisticsView(LoginRequiredMixin, View):
-
-    def get(self, request):
-        if request.is_ajax():
-            first_date = request.GET.get('first_date')
-            last_date = request.GET.get('last_date')
-            first_date = datetime.strptime(first_date, "%Y-%m-%dT%H:%M:%S.%fZ")
-            last_date = datetime.strptime(last_date, "%Y-%m-%dT%H:%M:%S.%fZ")
-            data = Issue.objects.filter(creation_time__gte=first_date, creation_time__lte=last_date).values(
-                'product__category').annotate(count=Count('product__category'))
-            # we did serialization this way because our queryset was ValuesQuerySet
-            # regular django serializers can't serialize it.
-
-            # bu isleri tek view ile tek ajax ile halletmeye ne dersin delikanli?
-            data = json.dumps(list(data), cls=DjangoJSONEncoder)
-            return JsonResponse(data, safe=False)
-        else:
-            return HttpResponseForbidden("<h1>403 FORBIDDEN</h1>")
 
 
 # Base UpdateView
