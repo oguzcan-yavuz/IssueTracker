@@ -83,6 +83,8 @@ class StatisticView(LoginRequiredMixin, View):
             last_date = request.GET.get('last_date')
             first_date = datetime.strptime(first_date, "%Y-%m-%dT%H:%M:%S.%fZ")
             last_date = datetime.strptime(last_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+            first_date = timezone.make_aware(first_date, timezone.get_current_timezone())
+            last_date = timezone.make_aware(last_date, timezone.get_current_timezone())
             if statistic == 1:
                 """This statistic gives issues done in given date gaps."""
                 data = Issue.objects.filter(delivery_time__gte=first_date,
@@ -99,8 +101,7 @@ class StatisticView(LoginRequiredMixin, View):
                 """This statistic gives the customers's count which created issue in given
                 date gap."""
                 data, day = [], timedelta(days=1)
-                current_date = timezone.make_aware(first_date, timezone.get_current_timezone())
-                last_date = timezone.make_aware(last_date, timezone.get_current_timezone())
+                current_date = first_date
 
                 while current_date <= last_date:
                     current_date_range = current_date + day
