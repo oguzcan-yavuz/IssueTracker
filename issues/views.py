@@ -146,8 +146,8 @@ class StatisticView(LoginRequiredMixin, View):
                 and count of problems they have solved."""
                 data = Issue.objects.filter(status='DO').values('tech_guy').annotate(
                     ort=Avg(ExpressionWrapper(F('delivery_time') - F('creation_time'),
-                                              output_field=DurationField()))).order_by('ort').annotate(
-                    count=Count('tech_guy'))
+                                              output_field=DurationField())),
+                    count=Count('tech_guy')).order_by('ort')
                 data = json.dumps(list(data), cls=DjangoJSONEncoder)
                 return JsonResponse(data, safe=False)
         else:
