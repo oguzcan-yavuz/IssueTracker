@@ -3,11 +3,12 @@ import json
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Count, F, ExpressionWrapper, Avg, DurationField
 from django.http import JsonResponse, HttpResponseForbidden
+from django.shortcuts import reverse
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView
-from django.shortcuts import reverse
-from django.db.models import Count, F, ExpressionWrapper, Avg, DurationField
+from django.utils import timezone
 
 from .forms import *
 from .models import Issue
@@ -98,24 +99,28 @@ class StatisticView(LoginRequiredMixin, View):
                 """This statistic gives the customers's count which created issue in given
                 date gap."""
                 data, day = [], timedelta(days=1)
-                current_date = first_date
+                current_date = timezone.make_aware(first_date, timezone.get_current_timezone())
+                last_date = timezone.make_aware(last_date, timezone.get_current_timezone())
+
                 while current_date <= last_date:
+                    current_date_range = current_date + day
+                    # Burada en sona tarihi elle ekleme kismini SQL'de distinct ON kullanarak
+                    # yapabiliriz ancak sqlite de distinc ON yok.
+                    # PostgreSQL kullanirsak burayi tekrar duzenle, belki onda vardir.
                     data.append(list(Issue.objects.filter(
-                        # creation time tamamen ayni olmadigi icin filtre sonucu bos donuyor (exact)
-                        # sadece gunleri kontrol ederek filtreleme yapmamiz lazim
-                        creation_time__exact=current_date).values(
-                        'customer').distinct().annotate(count=Count('customer'))) + [{'date': current_date}])
+                        creation_time__range=(current_date, current_date_range)).values(
+                        'customer__name').distinct().annotate(count=Count('customer'))) + [{'date': current_date}])
                     current_date += day
-                # return kismi values query set yerine liste verdigimiz icin sikinti cikarabilir
+
                 data = json.dumps(data, cls=DjangoJSONEncoder)
                 return JsonResponse(data, safe=False)
             elif statistic == 4:
                 """This statistic gives the customers which ordered by their issue count."""
-                data = Issue.objects.values('customer').annotate(count=Count('customer'))
+                data = Issue.objects.values('customer__name').annotate(count=Count('customer'))
                 return values_queryset_to_json(data)
             elif statistic == 5:
                 """This statistic gives the most trouble products."""
-                data = Issue.objects.values('product').annotate(count=Count('product'))
+                data = Issue.objects.values('product__name').annotate(count=Count('product'))
                 return values_queryset_to_json(data)
             elif statistic == 6:
                 """This statistic gives the average time of problem solve of tech guys
