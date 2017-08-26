@@ -54,7 +54,7 @@ class CategoryListView(LoginRequiredMixin, ListView):
 # CustomerHistoryView
 
 class CustomerHistoryView(LoginRequiredMixin, ListView):
-    """lists specific customer's issues"""
+    """Lists specific customer's issues"""
     template_name = 'issues/customer_histories.html'
     context_object_name = 'customer_history'
     paginate_by = 10
@@ -64,6 +64,21 @@ class CustomerHistoryView(LoginRequiredMixin, ListView):
         return Issue.objects.filter(customer_id=customer_id)
 
 
+class TechGuysHistoryView(LoginRequiredMixin, ListView):
+    """Lists spesific tech guy's issue fix history."""
+    template_name = 'issues/tech_guy_histories.html'
+    paginate_by = 10
+    model = Issue
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tech_guy_id = self.kwargs['tech_guy_id']
+        context["tech_guy_history"] = Issue.objects.filter(tech_guy_id=tech_guy_id).annotate(
+            fix_time=ExpressionWrapper(F('delivery_time') - F('creation_time'), output_field=DurationField())).\
+            values('name', 'fix_time', 'creation_time', 'delivery_time')
+        return context
+
+
 # StatisticView
 
 class StatisticView(LoginRequiredMixin, View):
@@ -71,13 +86,6 @@ class StatisticView(LoginRequiredMixin, View):
 
     def get(self, request):
         if request.is_ajax():
-
-            def values_queryset_to_json(value):
-                # We are doing serialization this way when our queryset is ValuesQuerySet.
-                # Because regular django serializers can't serialize it.
-                value = json.dumps(list(value), cls=DjangoJSONEncoder)
-                return JsonResponse(value, safe=False)
-
             statistic = int(request.GET.get('statistic'))
             first_date = request.GET.get('first_date')
             last_date = request.GET.get('last_date')
@@ -85,6 +93,8 @@ class StatisticView(LoginRequiredMixin, View):
             last_date = datetime.strptime(last_date, "%Y-%m-%dT%H:%M:%S.%fZ")
             first_date = timezone.make_aware(first_date, timezone.get_current_timezone())
             last_date = timezone.make_aware(last_date, timezone.get_current_timezone())
+            day = timedelta(days=1)
+
             if statistic == 1:
                 """This statistic gives issues done in given date gaps."""
                 data = Issue.objects.filter(delivery_time__gte=first_date,
@@ -96,41 +106,50 @@ class StatisticView(LoginRequiredMixin, View):
                 data = Issue.objects.filter(
                     creation_time__gte=first_date, creation_time__lte=last_date).values(
                     'product__category__name').annotate(count=Count('product__category'))
-                return values_queryset_to_json(data)
+
+                # We are doing serialization this way when our queryset is ValuesQuerySet.
+                # Because regular django serializers can't serialize it.
+                data = json.dumps(list(data), cls=DjangoJSONEncoder)
+                return JsonResponse(data, safe=False)
             elif statistic == 3:
                 """This statistic gives the customers's count which created issue in given
                 date gap."""
-                data, day = [], timedelta(days=1)
+                data = []
                 current_date = first_date
 
                 while current_date <= last_date:
                     current_date_range = current_date + day
-                    # Burada en sona tarihi elle ekleme kismini SQL'de distinct ON kullanarak
-                    # yapabiliriz ancak sqlite de distinc ON yok.
-                    # PostgreSQL kullanirsak burayi tekrar duzenle, belki onda vardir.
                     data.append(list(Issue.objects.filter(
                         creation_time__range=(current_date, current_date_range)).values(
-                        'customer__name').distinct().annotate(count=Count('customer'))) + [{'date': current_date}])
+                        'customer__name').annotate(count=Count('customer'))) + [{'date': current_date}])
                     current_date += day
 
                 data = json.dumps(data, cls=DjangoJSONEncoder)
                 return JsonResponse(data, safe=False)
             elif statistic == 4:
-                """This statistic gives the customers which ordered by their issue count."""
-                data = Issue.objects.values('customer__name').annotate(count=Count('customer'))
-                return values_queryset_to_json(data)
+                """This statistic gives the products's count which have an issue in given
+                date gap."""
+                data = []
+                current_date = first_date
+
+                while current_date <= last_date:
+                    current_date_range = current_date + day
+                    data.append(Issue.objects.filter(
+                        creation_time__range=(current_date, current_date_range)).values(
+                        'product__name').annotate(count=Count('product')) + [{'date': current_date}])
+                    current_date += day
+
+                data = json.dumps(data, cls=DjangoJSONEncoder)
+                return JsonResponse(data, safe=False)
             elif statistic == 5:
-                """This statistic gives the most trouble products."""
-                data = Issue.objects.values('product__name').annotate(count=Count('product'))
-                return values_queryset_to_json(data)
-            elif statistic == 6:
                 """This statistic gives the average time of problem solve of tech guys
                 and count of problems they have solved."""
                 data = Issue.objects.filter(status='DO').values('tech_guy').annotate(
                     ort=Avg(ExpressionWrapper(F('delivery_time') - F('creation_time'),
                                               output_field=DurationField()))).order_by('ort').annotate(
                     count=Count('tech_guy'))
-                return values_queryset_to_json(data)
+                data = json.dumps(list(data), cls=DjangoJSONEncoder)
+                return JsonResponse(data, safe=False)
         else:
             return HttpResponseForbidden("<h1>403 FORBIDDEN</h1>")
 
@@ -223,10 +242,10 @@ class AddCustomerView(CustomView):
     """Creates new customers"""
     form_class = CustomerForm
     title = "Yeni Müşteri Ekle"
-    redirect_url = "new_product"
+    redirect_url = "new_category"
 
     def get_success_url(self):
-        return reverse('new_product')
+        return reverse('new_category')
 
     def form_valid(self, form):
         form.instance.registered_by = self.request.user
@@ -237,7 +256,10 @@ class AddCategoryView(CustomView):
     """Creates new categories"""
     form_class = CategoryForm
     title = "Yeni Kategori Ekle"
-    success_url = '/'
+    redirect_url = "new_product"
+
+    def get_success_url(self):
+        return reverse('new_product')
 
 
 class AddProductView(CustomView):

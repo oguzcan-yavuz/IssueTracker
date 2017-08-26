@@ -9,6 +9,8 @@ urlpatterns = [
     url(r'^categories/$', CategoryListView.as_view(), name="category_list_url"),
     # CustomerHistory url
     url(r'^customers/history/(?P<customer_id>\d+)/$', CustomerHistoryView.as_view(), name="customer_history"),
+    # TechGuyHistory url
+    url(r'^tech_guys/history/(?P<tech_guy_id>\d+)/$', TechGuysHistoryView.as_view(), name="tech_guy_history"),
     # StatisticsView url
     url(r'^statistics/$', StatisticView.as_view(), name="profit_json"),
     # ProfitView url
