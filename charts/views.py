@@ -12,31 +12,8 @@ class ChartView(LoginRequiredMixin, TemplateView):
     template_name = 'charts/chart.html'
 
 
-class IssueChartView(LoginRequiredMixin, TemplateView):
-    template_name = 'charts/issue_chart.html'
-
-
 class CategoryIssueView(LoginRequiredMixin, TemplateView):
     template_name = 'charts/category_issue.html'
-
-# returns issue's delivery_time and creation_time difference to calculate it's fixing duration
-
-class IssueChartApiView(LoginRequiredMixin, APIView):
-
-    def get(self, request):
-        if request.is_ajax():
-            issue_fixing_durations = []
-            for obj in Issue.objects.all():
-                if obj.delivery_time is not None:
-                    issue_fixing_durations.append((obj.delivery_time - obj.creation_time))
-            issue_ids = [obj.id for obj in Issue.objects.all()]
-            data = {
-                "labels": issue_ids,
-                "values": issue_fixing_durations,
-            }
-            return Response(data)
-        else:
-            return HttpResponseForbidden('<h1>403 FORBIDDEN</h1>')
 
 
 # returns counts for each model in issues.models
