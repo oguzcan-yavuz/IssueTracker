@@ -26,54 +26,46 @@ class CategoryIssueView(LoginRequiredMixin, TemplateView):
     template_name = 'charts/category_issue.html'
 
 
-# returns counts for each model in issues.models
-
-class ChartApiView(LoginRequiredMixin, APIView):
-
-    def get(self, request):
-        if request.is_ajax():
-            issues_count = Issue.objects.count()
-            customers_count = Customer.objects.count()
-            products_count = Customer.objects.count()
-            categories_count = Category.objects.count()
-
-            labels = ["Sorun", "Müşteri", "Ürün", "Kategori"]
-            values = [issues_count, customers_count, products_count, categories_count]
-
-            data = {
-                "labels": labels,
-                "values": values,
-            }
-            return Response(data)
-        else:
-            return HttpResponseForbidden('<h1>403 FORBIDDEN</h1>')
-
-
 # returns all data for each model in issues.models
 
 class RestApiView(LoginRequiredMixin, APIView):
 
     def get(self, request):
         if request.is_ajax():
-            users = get_user_model().objects.all()
-            issues = Issue.objects.all()
-            customers = Customer.objects.all()
-            products = Product.objects.all()
-            categories = Category.objects.all()
+            data = {}
+            statistic = int(request.GET.get('statistic'))
+            if statistic == 1:
+                users = get_user_model().objects.all()
+                issues = Issue.objects.all()
+                customers = Customer.objects.all()
+                products = Product.objects.all()
+                categories = Category.objects.all()
 
-            issue_serializer = IssueSerializer(issues, many=True)
-            customer_serializer = CustomerSerializer(customers, many=True)
-            product_serializer = ProductSerializer(products, many=True)
-            category_serializer = CategorySerializer(categories, many=True)
-            user_serializer = UserSerializer(users, many=True)
+                issue_serializer = IssueSerializer(issues, many=True)
+                customer_serializer = CustomerSerializer(customers, many=True)
+                product_serializer = ProductSerializer(products, many=True)
+                category_serializer = CategorySerializer(categories, many=True)
+                user_serializer = UserSerializer(users, many=True)
 
-            data = {
-                "issues": issue_serializer.data,
-                "customers": customer_serializer.data,
-                "products": product_serializer.data,
-                "categories": category_serializer.data,
-                "users": user_serializer.data
-            }
+                data = {
+                    "issues": issue_serializer.data,
+                    "customers": customer_serializer.data,
+                    "products": product_serializer.data,
+                    "categories": category_serializer.data,
+                    "users": user_serializer.data
+                }
+            elif statistic == 2:
+                labels = ["Sorun", "Müşteri", "Ürün", "Kategori"]
+                values = [
+                    Issue.objects.count(),
+                    Customer.objects.count(),
+                    Product.objects.count(),
+                    Category.objects.count()
+                ]
+                data = {
+                    'labels': labels,
+                    'values': values,
+                }
             return Response(data)
         else:
             return HttpResponseForbidden('<h1>403 FORBIDDEN</h1>')

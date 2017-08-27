@@ -79,7 +79,10 @@ $("#txtSearch").keyup(function(event){
   var name = document.getElementById("txtSearch").value.toUpperCase();
   $.ajax({
     method : "GET",
-    url : "http://127.0.0.1:8000/charts/rest/"
+    url : "http://127.0.0.1:8000/charts/rest/",
+    data: {
+      statistic: 1
+    }
   }).then(function (response){
     searchFunc(response,name);
   })
@@ -90,7 +93,7 @@ function reformatDate(date){
   var formDate = date.split("/");
   var formatDate = formDate[2]+"-"+formDate[0]+"-"+ formDate[1]+"T00:00:00Z";
   return formatDate;
-};
+}
 
 
 $('#getProfits').click(function(){
@@ -102,7 +105,7 @@ $('#getProfits').click(function(){
 
   $.ajax({
     method : "GET",
-    url : "http://127.0.0.1:8000/statistics/",
+    url : "http://127.0.0.1:8000/charts/statistics/",
     data :
     {
       first_date: first_date,

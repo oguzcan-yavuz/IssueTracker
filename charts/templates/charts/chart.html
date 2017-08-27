@@ -16,10 +16,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
     <script src="{% static 'charts/js/setChart.js' %}"></script>
     <script>
-        var endpoint = '/charts/rest/chart/';
+        var endpoint = '/charts/rest/';
         $.ajax({
             method: "GET",
             url: endpoint,
+            data: {
+              statistic: 2
+            },
             success: function (data) {
                 // get data from /chars/rest/ endpoint (powered by django rest framework)
                 setChart("myChart", data.labels, data.values, 'bar');
