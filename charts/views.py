@@ -29,12 +29,14 @@ class CategoryIssueView(LoginRequiredMixin, TemplateView):
 # returns all data for each model in issues.models
 
 class RestApiView(LoginRequiredMixin, APIView):
+    """This view uses django-rest-framework's api view to give certain statistics."""
 
     def get(self, request):
         if request.is_ajax():
             data = {}
             statistic = int(request.GET.get('statistic'))
             if statistic == 1:
+                """This statistic gives all serialized data."""
                 users = get_user_model().objects.all()
                 issues = Issue.objects.all()
                 customers = Customer.objects.all()
@@ -55,6 +57,7 @@ class RestApiView(LoginRequiredMixin, APIView):
                     "users": user_serializer.data
                 }
             elif statistic == 2:
+                """This statistic gives count of each model."""
                 labels = ["Sorun", "Müşteri", "Ürün", "Kategori"]
                 values = [
                     Issue.objects.count(),
@@ -144,5 +147,3 @@ class StatisticView(LoginRequiredMixin, View):
                 return JsonResponse(data, safe=False)
         else:
             return HttpResponseForbidden("<h1>403 FORBIDDEN</h1>")
-
-
