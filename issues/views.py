@@ -44,6 +44,7 @@ class CategoryListView(LoginRequiredMixin, ListView):
 # CustomerHistoryView
 
 class CustomerHistoryView(LoginRequiredMixin, ListView):
+    # TODO: Modify this view's template.
     """Lists specific customer's issues"""
     template_name = 'issues/customer_histories.html'
     context_object_name = 'customer_history'
@@ -54,8 +55,11 @@ class CustomerHistoryView(LoginRequiredMixin, ListView):
         return Issue.objects.filter(customer_id=customer_id)
 
 
+# TechGuyHistoryView
+
 class TechGuysHistoryView(LoginRequiredMixin, ListView):
-    """Lists spesific tech guy's issue fix history."""
+    # TODO: Add this history to UI and modify it's template.
+    """Lists specific tech guy's issue fix history."""
     template_name = 'issues/tech_guy_histories.html'
     paginate_by = 10
     model = Issue
