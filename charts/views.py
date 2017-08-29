@@ -26,6 +26,14 @@ class CategoryIssueView(LoginRequiredMixin, TemplateView):
     template_name = 'charts/category_issue.html'
 
 
+class CustomerIssueView(LoginRequiredMixin, TemplateView):
+    template_name = 'charts/customer_issue.html'
+
+
+class ProductIssueView(LoginRequiredMixin, TemplateView):
+    template_name = 'charts/product_issue.html'
+
+
 # returns all data for each model in issues.models
 
 class RestApiView(LoginRequiredMixin, APIView):
@@ -114,9 +122,10 @@ class StatisticView(LoginRequiredMixin, View):
 
                 while current_date <= last_date:
                     current_date_range = current_date + day
-                    data.append(list(Issue.objects.filter(
+                    data.append([{'date': current_date}] + list(Issue.objects.filter(
                         creation_time__range=(current_date, current_date_range)).values(
-                        'customer__name').annotate(count=Count('customer'))) + [{'date': current_date}])
+                        'customer__name').annotate(
+                        customer_count=Count('customer'))))
                     current_date += day
 
                 data = json.dumps(data, cls=DjangoJSONEncoder)
@@ -129,9 +138,9 @@ class StatisticView(LoginRequiredMixin, View):
 
                 while current_date <= last_date:
                     current_date_range = current_date + day
-                    data.append(Issue.objects.filter(
+                    data.append([{'date': current_date}] + list(Issue.objects.filter(
                         creation_time__range=(current_date, current_date_range)).values(
-                        'product__name').annotate(count=Count('product')) + [{'date': current_date}])
+                        'product__name').annotate(product_count=Count('product'))))
                     current_date += day
 
                 data = json.dumps(data, cls=DjangoJSONEncoder)
@@ -140,9 +149,9 @@ class StatisticView(LoginRequiredMixin, View):
                 """This statistic gives the average time of problem solve of tech guys
                 and count of problems they have solved."""
                 data = Issue.objects.filter(status='DO').values('tech_guy').annotate(
-                    ort=Avg(ExpressionWrapper(F('delivery_time') - F('creation_time'),
-                                              output_field=DurationField())),
-                    count=Count('tech_guy')).order_by('ort')
+                    fix_time_avg=Avg(ExpressionWrapper(F('delivery_time') - F('creation_time'),
+                                                       output_field=DurationField())),
+                    solved_issue_count=Count('tech_guy')).order_by('ort')
                 data = json.dumps(list(data), cls=DjangoJSONEncoder)
                 return JsonResponse(data, safe=False)
         else:

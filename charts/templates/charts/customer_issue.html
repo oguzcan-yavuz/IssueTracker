@@ -1,0 +1,73 @@
+{% extends 'issues/base.html' %}
+{% load static %}
+{% block css_includes %}
+    <link rel="stylesheet   " href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Customer - Issue</h4>
+            <input type="datetime" id="first_date" placeholder="" class="datepicker">
+            <input type="datetime" id="last_date" placeholder="" class="datepicker">
+            <button type="button" id="getCustomer">Get Results</button>
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+
+{% endblock %}
+{% block js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <script src="{% static 'charts/js/setChart.js' %}"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+
+    <script>
+
+        var endpoint = 'http://127.0.0.1:8000/charts/statistics/';
+
+        $('#getCustomer').click(function () {
+            var first_date = document.getElementById("first_date").value;
+            var last_date = document.getElementById("last_date").value;
+
+            first_date = new Date(reformatDate(first_date)).toISOString();
+            last_date = new Date(reformatDate(last_date)).toISOString();
+
+            // var first_date = new Date("2017-08-23T12:00:00Z").toISOString(); 24 / 08 / 2017
+            // var last_date = new Date("2017-09-01T12:00:00Z").toISOString();
+            $.ajax({
+                method: "GET",
+                url: endpoint,
+                data:
+                    {
+                        first_date: first_date,
+                        last_date: last_date,
+                        statistic: 3
+                    }, success: function (response) {
+                    response = JSON.parse(response);
+                    var dataLabel = [];
+                    var data = [];
+                    var dates = [];
+                    // TODO: chart verilerini tarih araligi yerine dates dizisini kullanarak
+                    // gun gun goster.
+                    for (var i = 0; i < response.length; i++) {
+                        dates.push(response[i][0].date);
+                        response[i].map(function (item) {
+                            if (item.customer_count !== undefined) {
+                                dataLabel.push(item.customer__name);
+                                data.push(item.customer_count);
+                            }
+                        })
+                    }
+                    setChart("myChart", dataLabel, data, 'bar');
+
+                }
+            })
+        });
+
+    </script>
+{% endblock %}
