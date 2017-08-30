@@ -1,0 +1,48 @@
+{% extends 'issues/base.html' %}
+{% load static %}
+{% block css_includes %}
+    <link rel="stylesheet   " href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <h4>tech guy issue</h4>
+        <canvas id="myChart"></canvas>
+    </div>
+
+{% endblock %}
+{% block js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <script src="{% static 'charts/js/setChart.js' %}"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+
+    <script>
+
+        var endpoint = 'http://127.0.0.1:8000/charts/statistics/';
+            $.ajax({
+                method: "GET",
+                url: endpoint,
+                data:
+                    {
+                        statistic: 5
+                    }, success: function (response) {
+                    response = JSON.parse(response);
+                    var dataLabel = [];
+                    var data = [];
+                    response.map(function (item) {
+                        // TODO: use item.fix_time_avg too.
+                        dataLabel.push(item.tech_guy__username);
+                        data.push(item.solved_issue_count);
+                    });
+                    setChart("myChart", dataLabel, data, 'bar');
+
+                }
+            });
+
+    </script>
+{% endblock %}
